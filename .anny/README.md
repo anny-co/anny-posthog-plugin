@@ -305,7 +305,7 @@ git commit -am "config: …"
 | `.claude-plugin/marketplace.json` | Marketplace → `anny`, Plugin-Eintrag |
 | `.agents/plugins/marketplace.json` | Quelle → dieses Repo. **Ohne das würde die Claude App aus unserem Marketplace das offizielle Plugin installieren** — mit Cloud-Endpoint. |
 | `skills/`, `commands/`, `agents/` | ~250 Deeplinks `us/eu/app.posthog.com` → `posthog.anny.cloud` |
-| `posthog_llma/`, `hooks/` | LLMA-Default-Host → `p.anny.cloud` |
+| `telemetry/`, `hooks/` | LLMA-Default-Host → `p.anny.cloud` |
 | `.github/` | Upstream-CI raus, unser Workflow rein |
 | `README.md` | dieses hier; Upstreams liegt als `UPSTREAM_README.md` daneben |
 

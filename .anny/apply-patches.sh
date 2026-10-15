@@ -37,6 +37,11 @@ for f in .mcp.json mcp.json .claude-plugin/plugin.json \
          .claude-plugin/marketplace.json .agents/plugins/marketplace.json; do
     [ -f "$f" ] || fail "missing $f"
 done
+# The rewrites below grep these directories with stderr silenced; a directory
+# upstream moved would make grep exit 2 and kill the script without a word.
+for d in skills commands agents hooks telemetry/posthog_llma telemetry/hooks; do
+    [ -d "$d" ] || fail "missing $d/ -- upstream restructured"
+done
 assert .mcp.json                     '.mcpServers.posthog.url'
 assert mcp.json                      '.mcpServers.posthog.url'
 assert .claude-plugin/plugin.json    '.name == "posthog"'
@@ -95,7 +100,7 @@ grep -rlE 'https://(us|eu|app)\.posthog\.com' skills commands agents 2>/dev/null
 # Opt-in hook, but its default host is PostHog Cloud. Anyone who flips
 # POSTHOG_LLMA_CC_ENABLED without also setting POSTHOG_HOST would ship their
 # Claude Code transcripts to the wrong company.
-grep -rlE 'https://(us|eu)\.i\.posthog\.com' posthog_llma hooks 2>/dev/null \
+grep -rlE 'https://(us|eu)\.i\.posthog\.com' telemetry hooks 2>/dev/null \
     | sed_files "s#https://(us|eu)\.i\.posthog\.com#${POSTHOG_INGEST_URL}#g"
 
 # --- assertions --------------------------------------------------------------
@@ -104,6 +109,11 @@ grep -rlE 'https://(us|eu)\.i\.posthog\.com' posthog_llma hooks 2>/dev/null \
 [ "$(jq -r '.name' .claude-plugin/plugin.json)" = "$PLUGIN_NAME" ] || fail "plugin not renamed"
 [ "$(jq -r '.plugins[0].source.url' .agents/plugins/marketplace.json)" = "${REPO_URL}.git" ] \
     || fail "app marketplace still points upstream"
+if grep -rqE 'https://(us|eu)\.i\.posthog\.com' telemetry hooks --include='*.py' --include='*.sh' --include='*.json' 2>/dev/null; then
+    echo "apply-patches: LLMA hook code still defaults to PostHog Cloud:" >&2
+    grep -rlE 'https://(us|eu)\.i\.posthog\.com' telemetry hooks --include='*.py' --include='*.sh' --include='*.json' >&2
+    exit 1
+fi
 if grep -rqF 'mcp.posthog.com' . --exclude-dir=.git --exclude-dir=.anny --exclude='*.md' 2>/dev/null; then
     echo "apply-patches: leftover references to the hosted MCP endpoint:" >&2
     grep -rlF 'mcp.posthog.com' . --exclude-dir=.git --exclude-dir=.anny --exclude='*.md' >&2
