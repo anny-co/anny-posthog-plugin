@@ -34,7 +34,8 @@ sed_files() {
 
 # --- anchors -----------------------------------------------------------------
 for f in .mcp.json mcp.json .claude-plugin/plugin.json \
-         .claude-plugin/marketplace.json .agents/plugins/marketplace.json; do
+         .claude-plugin/marketplace.json .agents/plugins/marketplace.json \
+         commands/llma-cc-setup.md commands/llma-cc-setup.toml; do
     [ -f "$f" ] || fail "missing $f"
 done
 # The rewrites below grep these directories with stderr silenced; a directory
@@ -103,6 +104,16 @@ grep -rlE 'https://(us|eu|app)\.posthog\.com' skills commands agents 2>/dev/null
 grep -rlE 'https://(us|eu)\.i\.posthog\.com' telemetry hooks 2>/dev/null \
     | sed_files "s#https://(us|eu)\.i\.posthog\.com#${POSTHOG_INGEST_URL}#g"
 
+# The setup command walks the reader through the same opt-in and tells them to
+# set POSTHOG_HOST to US or EU Cloud -- so following it to the letter still
+# ships transcripts to PostHog. There is one host here, not two regions: drop
+# the region choice first, then rewrite what is left.
+printf '%s\n' commands/llma-cc-setup.md commands/llma-cc-setup.toml | sed_files "
+    s#\\(default: \`https://us\\.i\\.posthog\\.com\`, use \`https://eu\\.i\\.posthog\\.com\` for EU\\)#(default: \`${POSTHOG_INGEST_URL}\`)#
+    s#[[:space:]]*\\# for EU, omit for US##
+    s#defaults to US#defaults to ${POSTHOG_INGEST_URL}#
+    s#https://(us|eu)\\.i\\.posthog\\.com#${POSTHOG_INGEST_URL}#g"
+
 # --- assertions --------------------------------------------------------------
 [ "$(jq -r '.mcpServers.posthog.url' .mcp.json)" = "$MCP_URL" ] || fail ".mcp.json url not rewritten"
 [ "$(jq -r '.mcpServers.posthog.url' mcp.json)" = "$MCP_URL" ] || fail "mcp.json url not rewritten"
@@ -112,6 +123,11 @@ grep -rlE 'https://(us|eu)\.i\.posthog\.com' telemetry hooks 2>/dev/null \
 if grep -rqE 'https://(us|eu)\.i\.posthog\.com' telemetry hooks --include='*.py' --include='*.sh' --include='*.json' 2>/dev/null; then
     echo "apply-patches: LLMA hook code still defaults to PostHog Cloud:" >&2
     grep -rlE 'https://(us|eu)\.i\.posthog\.com' telemetry hooks --include='*.py' --include='*.sh' --include='*.json' >&2
+    exit 1
+fi
+if grep -qE 'i\.posthog\.com|for EU|defaults to US' commands/llma-cc-setup.md commands/llma-cc-setup.toml; then
+    echo "apply-patches: LLMA setup docs still point at PostHog Cloud:" >&2
+    grep -nE 'i\.posthog\.com|for EU|defaults to US' commands/llma-cc-setup.md commands/llma-cc-setup.toml >&2
     exit 1
 fi
 if grep -rqF 'mcp.posthog.com' . --exclude-dir=.git --exclude-dir=.anny --exclude='*.md' 2>/dev/null; then
