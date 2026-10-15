@@ -42,7 +42,7 @@ cp .env.example .env
 
 # Edit .env and add your PostHog project token
 # VITE_POSTHOG_PROJECT_TOKEN=phc_your_project_token_here
-# VITE_POSTHOG_HOST=https://us.i.posthog.com
+# VITE_POSTHOG_HOST=https://p.anny.cloud
 ```
 
 ### 3. Run the App
@@ -89,7 +89,7 @@ basics/javascript/
 import posthog from 'posthog-js'
 
 posthog.init('your-project-token', {
-  api_host: 'https://us.i.posthog.com',
+  api_host: 'https://p.anny.cloud',
 })
 ```
 
@@ -152,7 +152,7 @@ The app works fine without PostHog configured. You'll see a console warning but 
 ```example
 # PostHog Configuration
 VITE_POSTHOG_PROJECT_TOKEN=phc_your_project_token_here
-VITE_POSTHOG_HOST=https://us.i.posthog.com
+VITE_POSTHOG_HOST=https://p.anny.cloud
 
 # Optional: Enable debug mode to see PostHog requests in console
 # VITE_POSTHOG_DEBUG=true
@@ -430,7 +430,7 @@ renderTodos();
 import posthog from 'posthog-js';
 
 const projectToken = import.meta.env.VITE_POSTHOG_PROJECT_TOKEN;
-const apiHost = import.meta.env.VITE_POSTHOG_HOST || 'https://us.i.posthog.com';
+const apiHost = import.meta.env.VITE_POSTHOG_HOST || 'https://p.anny.cloud';
 
 if (!projectToken) {
   console.warn(

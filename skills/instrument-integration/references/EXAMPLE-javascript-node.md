@@ -43,7 +43,7 @@ cp .env.example .env
 
 # Edit .env and add your PostHog project token
 # POSTHOG_PROJECT_TOKEN=phc_your_project_token_here
-# POSTHOG_HOST=https://us.i.posthog.com
+# POSTHOG_HOST=https://p.anny.cloud
 ```
 
 ### 3. Run the server
@@ -107,7 +107,7 @@ basics/javascript-node/
 import { PostHog } from 'posthog-node';
 
 const posthog = new PostHog(apiKey, {
-  host: 'https://us.i.posthog.com',
+  host: 'https://p.anny.cloud',
 });
 ```
 
@@ -153,7 +153,7 @@ process.on('SIGTERM', shutdown);
 ```example
 # PostHog Configuration
 POSTHOG_PROJECT_TOKEN=phc_your_project_token_here
-POSTHOG_HOST=https://us.i.posthog.com
+POSTHOG_HOST=https://p.anny.cloud
 
 # Optional: Enable debug mode to see PostHog requests
 # POSTHOG_DEBUG=true
@@ -198,7 +198,7 @@ function initializePosthog() {
   }
 
   const client = new PostHog(projectToken, {
-    host: process.env.POSTHOG_HOST || 'https://us.i.posthog.com',
+    host: process.env.POSTHOG_HOST || 'https://p.anny.cloud',
     enableExceptionAutocapture: true,
   });
 

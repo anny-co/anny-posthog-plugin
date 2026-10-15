@@ -236,7 +236,7 @@ MIT
 
 ```example
 POSTHOG_PROJECT_TOKEN=phc_your_project_token_here
-POSTHOG_HOST=https://us.i.posthog.com
+POSTHOG_HOST=https://p.anny.cloud
 
 ```
 
@@ -290,7 +290,7 @@ export default {
     scheme: 'burritoapp',
     extra: {
       posthogProjectToken: process.env.POSTHOG_PROJECT_TOKEN,
-      posthogHost: process.env.POSTHOG_HOST || 'https://us.i.posthog.com',
+      posthogHost: process.env.POSTHOG_HOST || 'https://p.anny.cloud',
     },
     plugins: ['expo-router', 'expo-localization'],
   },
@@ -998,7 +998,7 @@ import Constants from 'expo-constants'
 // Configuration loaded from app.config.js extras via expo-constants
 // Environment variables are read at build time in app.config.js
 const projectToken = Constants.expoConfig?.extra?.posthogProjectToken as string | undefined
-const host = (Constants.expoConfig?.extra?.posthogHost as string) || 'https://us.i.posthog.com'
+const host = (Constants.expoConfig?.extra?.posthogHost as string) || 'https://p.anny.cloud'
 const isPostHogConfigured = projectToken && projectToken !== 'phc_your_project_token_here'
 
 if (__DEV__) {

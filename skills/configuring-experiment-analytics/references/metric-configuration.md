@@ -2338,6 +2338,45 @@ The schema is authoritative; the prose and examples below are guidance.
       "title": "ExperimentDataWarehouseNode",
       "type": "object"
     },
+    "ExperimentExposureNode": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "ExperimentExposureNode",
+          "default": "ExperimentExposureNode",
+          "title": "Kind",
+          "type": "string"
+        },
+        "response": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Response"
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "version of the node, used for schema migrations",
+          "title": "Version"
+        }
+      },
+      "title": "ExperimentExposureNode",
+      "type": "object"
+    },
     "ExperimentFunnelMetric": {
       "additionalProperties": false,
       "properties": {
@@ -3233,7 +3272,8 @@ The schema is authoritative; the prose and examples below are guidance.
             "mapping": {
               "ActionsNode": "#/$defs/ActionsNode",
               "EventsNode": "#/$defs/EventsNode",
-              "ExperimentDataWarehouseNode": "#/$defs/ExperimentDataWarehouseNode"
+              "ExperimentDataWarehouseNode": "#/$defs/ExperimentDataWarehouseNode",
+              "ExperimentExposureNode": "#/$defs/ExperimentExposureNode"
             },
             "propertyName": "kind"
           },
@@ -3246,6 +3286,9 @@ The schema is authoritative; the prose and examples below are guidance.
             },
             {
               "$ref": "#/$defs/ExperimentDataWarehouseNode"
+            },
+            {
+              "$ref": "#/$defs/ExperimentExposureNode"
             }
           ],
           "title": "Start Event"
@@ -4789,9 +4832,15 @@ resend — sending the link `id` attaches the wrong metric or fails validation.
 `metadata` is optional and defaults to `primary`. Pass an empty array to detach
 all shared metrics.
 
-To promote a one-off inline metric into a reusable shared metric, call
-`experiment-saved-metrics-create` with the same `query` (the `ExperimentMetric`
-object), then attach it via `saved_metrics_ids` as above.
+To promote a one-off inline metric into a reusable shared metric:
+
+1. Call `experiment-saved-metrics-create` with the inline metric's `query` (the
+   `ExperimentMetric` object) and leave out `query.uuid`. The API assigns the
+   shared metric a new uuid and ignores one you send.
+2. In a single `experiment-update` call, attach the new metric through
+   `saved_metrics_ids` as above, and resend `metrics` (or `metrics_secondary`)
+   without the inline metric. If you leave the inline metric in place, the
+   experiment measures the same thing twice.
 
 ## Property filters
 

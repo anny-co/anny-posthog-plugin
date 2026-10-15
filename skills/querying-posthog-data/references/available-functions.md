@@ -480,6 +480,7 @@ mapAdd
 mapApply
 mapContains
 mapContainsKeyLike
+mapExists
 mapExtractKeyLike
 mapFilter
 mapFromArrays
@@ -516,6 +517,7 @@ maxOrNull
 maxState
 maxStateOrDefault
 maxStateOrNull
+MD5
 md5
 median
 medianArgMax
@@ -871,6 +873,8 @@ tuplePlus
 tupleToNameValuePairs
 unhex
 uniq
+uniqCombined
+uniqCombined64
 uniqExact
 uniqExactMerge
 uniqExactState

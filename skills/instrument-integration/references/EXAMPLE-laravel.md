@@ -49,7 +49,7 @@ A Laravel application demonstrating PostHog integration for analytics, feature f
 3. Configure PostHog in `.env`:
    ```env
    POSTHOG_PROJECT_TOKEN=your_posthog_project_token
-   POSTHOG_HOST=https://us.i.posthog.com
+   POSTHOG_HOST=https://p.anny.cloud
    POSTHOG_DISABLED=false
    ```
 
@@ -276,7 +276,7 @@ SESSION_DRIVER=file
 SESSION_LIFETIME=120
 
 POSTHOG_PROJECT_TOKEN=your_posthog_project_token_here
-POSTHOG_HOST=https://us.i.posthog.com
+POSTHOG_HOST=https://p.anny.cloud
 POSTHOG_DISABLED=false
 
 ```
@@ -1048,7 +1048,7 @@ return [
 
 return [
     'api_key' => env('POSTHOG_PROJECT_TOKEN', ''),
-    'host' => env('POSTHOG_HOST', 'https://us.i.posthog.com'),
+    'host' => env('POSTHOG_HOST', 'https://p.anny.cloud'),
     'disabled' => env('POSTHOG_DISABLED', false),
     'debug' => env('APP_DEBUG', false),
 ];

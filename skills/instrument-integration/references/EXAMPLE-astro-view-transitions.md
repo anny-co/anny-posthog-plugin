@@ -45,7 +45,7 @@ Create a `.env` file in the project root:
 
 ```bash
 PUBLIC_POSTHOG_PROJECT_TOKEN=your_posthog_project_token
-PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
+PUBLIC_POSTHOG_HOST=https://p.anny.cloud
 ```
 
 Get your PostHog project token from your project settings in PostHog.
@@ -92,7 +92,7 @@ When using Astro's View Transitions (ClientRouter), you **must** wrap the PostHo
     window.__posthog_initialized = true;
     !function(t,e){...}(document,window.posthog||[]);
     posthog.init('<ph_project_token>', {
-      api_host: 'https://us.i.posthog.com',
+      api_host: 'https://p.anny.cloud',
       defaults: '2026-01-30',
       // IMPORTANT: Use 'history_change' for automatic pageview tracking during soft navigation
       capture_pageview: 'history_change'
@@ -195,7 +195,7 @@ npm run preview
 
 ```example
 PUBLIC_POSTHOG_PROJECT_TOKEN=your_posthog_project_token_here
-PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
+PUBLIC_POSTHOG_HOST=https://p.anny.cloud
 
 ```
 
@@ -359,9 +359,11 @@ export default defineConfig({});
   // during page transitions, causing a stack overflow error.
   if (!window.__posthog_initialized) {
     window.__posthog_initialized = true;
-    !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys getNextSurveyStep onSessionId".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+    // POSTHOG_BROWSER_SNIPPET_START
+    !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],Object.defineProperty(u,"toString",{configurable:!0,enumerable:!0,writable:!0,value:function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e}}),Object.defineProperty(u.people,"toString",{configurable:!0,enumerable:!0,writable:!0,value:function(){return u.toString(1)+".people (stub)"}}),o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys getNextSurveyStep onSessionId".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+    // POSTHOG_BROWSER_SNIPPET_END
     posthog.init(apiKey || '', {
-      api_host: apiHost || 'https://us.i.posthog.com',
+      api_host: apiHost || 'https://p.anny.cloud',
       defaults: '2026-01-30',
       // IMPORTANT: Use 'history_change' to automatically track pageviews during soft navigation
       capture_pageview: 'history_change'

@@ -1,18 +1,12 @@
 > AI agents: this is one page from PostHog's docs. Full index of Markdown docs for LLMs: https://posthog.com/llms.txt
 
-# Elixir Feature Flags installation - Docs
-
-Copy page
-
-# Elixir Feature Flags installation - Docs
+# Elixir Feature Flags installation
 
 > This library was built by the community but it's being maintained by the PostHog core team since v1.0.0. Thank you to [Nick Kezhaya](https://github.com/nkezhaya) for building it originally. Thank you to [Alex Martsinovich](https://github.com/martosaur) for contributing v2.0.0.
 
 The package can be installed by adding `posthog` to your list of dependencies in `mix.exs`:
 
 Elixir
-
-PostHog AI
 
 ```elixir
 def deps do
@@ -26,12 +20,10 @@ end
 
 config/config.exs
 
-PostHog AI
-
 ```elixir
 config :posthog,
   enable: true,
-  api_host: "https://us.i.posthog.com",
+  api_host: "https://p.anny.cloud",
   api_key: "<ph_project_token>",
   in_app_otp_apps: [:my_app]
 ```

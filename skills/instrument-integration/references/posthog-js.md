@@ -44,7 +44,7 @@ Most browser applications should use the default exported singleton and call `po
 
 ```ts
 const instance = new PostHog()
-instance.init('<ph_project_api_key>', { api_host: 'https://us.i.posthog.com' })
+instance.init('<ph_project_api_key>', { api_host: 'https://p.anny.cloud' })
 ```
 
 ---
@@ -126,7 +126,7 @@ posthog.get_session_id();
 
 **Release Tag:** public
 
-Returns all currently cached feature flags as `FeatureFlagResult`s. This is a synchronous read of the flags from the last load (no network request); call `reloadFeatureFlags()` first to refresh. Unlike `getFeatureFlag()`, it does not send a `$feature_flag_called` event.
+Returns all currently cached feature flags as `FeatureFlagResult`s. This is a synchronous read of the flags from the last load (no network request); call `reloadFeatureFlags()` first to refresh. Conclusive off evaluations are included with `enabled: false`; keys omitted from the response, including globally inactive flags, are absent. Unlike `getFeatureFlag()`, this method does not send a `$feature_flag_called` event.
 
 ### Returns
 
@@ -171,12 +171,12 @@ Set HMAC-based identity verification.
 
 **Notes:**
 
-When set, products like conversations use server-verified identity (distinct_id + HMAC hash) instead of anonymous session identifiers. The hash should be computed server-side as HMAC-SHA256 of the distinct_id using the project's API secret.
+When set, products like conversations use server-verified identity (distinct_id + HMAC hash) instead of anonymous session identifiers. The hash should be computed server-side as HMAC-SHA256 of the distinct_id, signed with the Secret API key from Support settings. Project secret API keys (project settings) and personal API keys are rejected. Any additional signed identity claims are cleared because they are bound to the previously configured distinct_id.
 
 ### Parameters
 
 - **`distinctId`** (`string`) - The verified user distinct_id
-- **`hash`** (`string`) - HMAC-SHA256 of distinctId using the project API secret
+- **`hash`** (`string`) - HMAC-SHA256 of distinctId, signed with the Secret API key from Support settings
 
 ### Returns
 
@@ -553,7 +553,7 @@ By default, PostHog assigns each user a randomly generated `distinct_id`. Use th
 
 ### Parameters
 
-- **`new_distinct_id?`** (`string`) - A string that uniquely identifies a user. If not provided, the distinct_id currently in the persistent store (cookie or localStorage) will be used.
+- **`new_distinct_id`** (`string`) - A non-empty string that uniquely identifies a user.
 - **`userPropertiesToSet?`** (`Properties`) - Optional: An associative array of properties to store about the user. Note: For feature flag evaluations, if the same key is present in the userPropertiesToSetOnce, it will be overwritten by the value in userPropertiesToSet.
 - **`userPropertiesToSetOnce?`** (`Properties`) - Optional: An associative array of properties to store about the user. If property is previously set, this does not override that value.
 
@@ -767,6 +767,7 @@ Removes properties from the person profile associated with the current `distinct
 **Notes:**
 
 Deletes the given person properties from the person profile in PostHog. This is the counterpart to  — instead of hand-passing `$unset` inside a `capture()` call, you can remove properties with a dedicated method. If `person_profiles` is set to `never`, this call is ignored.
+`$fbc` and `$fbp` read by the SDK are unset for this call only. `save_campaign_params: false` stops the reads.
 
 ### Parameters
 
@@ -1845,7 +1846,7 @@ Gets the value of a feature flag for the current user.
 
 **Notes:**
 
-Returns the feature flag value which can be a boolean, string, or undefined. Supports multivariate flags that can return custom string values.
+Returns the feature flag value which can be a boolean, string, or undefined. Supports multivariate flags that can return custom string values. An evaluated boolean flag returns `true` or `false`; `undefined` means no current evaluation is available for the key. Globally inactive flags are omitted from the remote `/flags` response, so after that response loads they are unavailable rather than represented by a `false` result.
 
 ### Parameters
 
@@ -1913,6 +1914,7 @@ if (betaFeature?.variant === 'some-value') {
 **Release Tag:** public
 
 Get a feature flag evaluation result including both the flag value and payload.
+A result with `enabled: false` is a conclusive off evaluation. `undefined` means no current evaluation is available for the key. This includes globally inactive flags, which are omitted from the remote `/flags` response.
 By default, this method emits the `$feature_flag_called` event.
 
 ### Parameters
@@ -1957,7 +1959,7 @@ Checks if a feature flag is enabled for the current user.
 
 **Notes:**
 
-Returns true if the flag is enabled, false if disabled, or undefined if not found (unless `defaultValue` is given, which is returned instead of undefined). This is a convenience method that treats any truthy value as enabled.
+Returns `true` or `false` when the flag has an evaluation value. A `false` result means the value evaluated off; it does not mean the SDK observed the flag's global active setting. Returns `undefined` when no current evaluation is available, unless `defaultValue` is given. Globally inactive flags are omitted from the remote `/flags` response and therefore have no value. This is a convenience method that treats any truthy value as enabled.
 
 ### Parameters
 

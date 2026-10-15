@@ -37,7 +37,7 @@ Create a `.env` file in the root directory:
 
 ```bash
 VITE_PUBLIC_POSTHOG_PROJECT_TOKEN=your_posthog_project_token
-VITE_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
+VITE_PUBLIC_POSTHOG_HOST=https://p.anny.cloud
 ```
 
 Get your PostHog project token from your [PostHog project settings](https://posthog.anny.cloud/project/settings).

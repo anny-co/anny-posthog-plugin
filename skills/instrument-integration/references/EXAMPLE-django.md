@@ -34,7 +34,7 @@ Create a `.env` file in the root directory:
 
 ```bash
 POSTHOG_PROJECT_TOKEN=your_posthog_project_token
-POSTHOG_HOST=https://us.i.posthog.com
+POSTHOG_HOST=https://p.anny.cloud
 ```
 
 Get your PostHog project token from your [PostHog project settings](https://posthog.anny.cloud/project/settings).
@@ -104,7 +104,7 @@ import os
 
 # PostHog configuration
 POSTHOG_PROJECT_TOKEN = os.environ.get('POSTHOG_PROJECT_TOKEN', '<ph_project_token>')
-POSTHOG_HOST = os.environ.get('POSTHOG_HOST', 'https://us.i.posthog.com')
+POSTHOG_HOST = os.environ.get('POSTHOG_HOST', 'https://p.anny.cloud')
 
 MIDDLEWARE = [
     # ... other middleware
@@ -193,7 +193,7 @@ If you're using PostHog's JavaScript SDK on the frontend, enable tracing headers
 
 ```javascript
 posthog.init('<ph_project_token>', {
-    api_host: 'https://us.i.posthog.com',
+    api_host: 'https://p.anny.cloud',
     tracing_headers: ['your-backend-domain.com'],
 })
 ```
@@ -213,7 +213,7 @@ This automatically adds `X-POSTHOG-SESSION-ID` and `X-POSTHOG-DISTINCT-ID` heade
 
 ```example
 POSTHOG_PROJECT_TOKEN=
-POSTHOG_HOST=https://us.i.posthog.com
+POSTHOG_HOST=https://p.anny.cloud
 DJANGO_SECRET_KEY=your-secret-key-here
 DEBUG=True
 
@@ -1063,7 +1063,7 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 # PostHog configuration
 POSTHOG_PROJECT_TOKEN = os.environ.get('POSTHOG_PROJECT_TOKEN', '<ph_project_token>')
-POSTHOG_HOST = os.environ.get('POSTHOG_HOST', 'https://us.i.posthog.com')
+POSTHOG_HOST = os.environ.get('POSTHOG_HOST', 'https://p.anny.cloud')
 POSTHOG_DISABLED = os.environ.get('POSTHOG_DISABLED', 'False').lower() == 'true'
 
 

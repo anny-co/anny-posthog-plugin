@@ -1,10 +1,6 @@
 > AI agents: this is one page from PostHog's docs. Full index of Markdown docs for LLMs: https://posthog.com/llms.txt
 
-# Flutter - Docs
-
-Copy page
-
-# Flutter - Docs
+# Flutter
 
 This is an optional library you can install if you're working with Flutter. It uses an internal queue to make calls fast and non-blocking. It also batches requests and flushes asynchronously, making it perfect to use in any part of your mobile app.
 
@@ -24,14 +20,14 @@ To start, add `posthog_flutter` to your `pubspec.yaml`:
 
 pubspec.yaml
 
-PostHog AI
-
 ```yaml
 # rest of your code
+
 dependencies:
   flutter:
     sdk: flutter
   posthog_flutter: ^5.26.0
+
 # rest of your code
 ```
 
@@ -49,14 +45,12 @@ Add your PostHog configuration to your `AndroidManifest.xml` file located in the
 
 android/app/src/main/AndroidManifest.xml
 
-PostHog AI
-
 ```xml
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="your.package.name">
     <application>
         <!-- ... other configuration ... -->
         <meta-data android:name="com.posthog.posthog.PROJECT_TOKEN" android:value="<ph_project_token>" />
-        <meta-data android:name="com.posthog.posthog.POSTHOG_HOST" android:value="https://us.i.posthog.com" />  <!-- usually 'https://us.i.posthog.com' or 'https://eu.i.posthog.com' -->
+        <meta-data android:name="com.posthog.posthog.POSTHOG_HOST" android:value="https://p.anny.cloud" />  <!-- usually 'https://p.anny.cloud' -->
         <!-- com.posthog.posthog.CAPTURE_APPLICATION_LIFECYCLE_EVENTS is enabled by default since version 5.23.0 (previously named TRACK_APPLICATION_LIFECYCLE_EVENTS, which still works as an alias) -->
         <meta-data android:name="com.posthog.posthog.DEBUG" android:value="true" />
     </application>
@@ -68,8 +62,6 @@ Or manually (more control and more configurations available):
 Add your PostHog configuration to your `AndroidManifest.xml` file located in the `android/app/src/main`:
 
 android/app/src/main/AndroidManifest.xml
-
-PostHog AI
 
 ```xml
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="your.package.name">
@@ -84,14 +76,14 @@ In both cases, you'll also need to update the minimum Android SDK version to `23
 
 android/app/build.gradle
 
-PostHog AI
-
 ```kotlin
 // rest of your config
+
     defaultConfig {
         minSdkVersion 23
         // rest of your config
     }
+
 // rest of your config
 ```
 
@@ -107,8 +99,6 @@ Add your PostHog configuration to the `Info.plist` file located in the `ios/Runn
 
 ios/Runner/Info.plist
 
-PostHog AI
-
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -118,7 +108,7 @@ PostHog AI
     <key>com.posthog.posthog.PROJECT_TOKEN</key>
     <string><ph_project_token></string>
     <key>com.posthog.posthog.POSTHOG_HOST</key>
-    <string>https://us.i.posthog.com</string>
+    <string>https://p.anny.cloud</string>
     <!-- com.posthog.posthog.CAPTURE_APPLICATION_LIFECYCLE_EVENTS is enabled by default since version 5.23.0 -->
     <key>com.posthog.posthog.DEBUG</key>
     <true/>
@@ -131,8 +121,6 @@ Or manually (more control and more configurations available):
 Add your PostHog configuration to the `Info.plist` file located in the `ios/Runner` directory:
 
 ios/Runner/Info.plist
-
-PostHog AI
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -152,8 +140,6 @@ For CocoaPods projects, set it in your `Podfile`:
 
 ios/Podfile
 
-PostHog AI
-
 ```yaml
 platform :ios, '13.0'
 # rest of your config
@@ -162,8 +148,6 @@ platform :ios, '13.0'
 For Swift Package Manager projects without a `Podfile`, set the **Minimum Deployments** version to iOS 13.0 for the `Runner` target in Xcode (**Runner > General > Minimum Deployments**). After you change **Minimum Deployments**, regenerate the iOS project's configuration files:
 
 Terminal
-
-PostHog AI
 
 ```bash
 flutter build ios --config-only
@@ -177,18 +161,18 @@ If you followed the manual SDK setup:
 
 Dart
 
-PostHog AI
-
 ```dart
 import 'package:flutter/material.dart';
+
 import 'package:posthog_flutter/posthog_flutter.dart';
+
 Future<void> main() async {
   // init WidgetsFlutterBinding if not yet
   WidgetsFlutterBinding.ensureInitialized();
   final config = PostHogConfig('<ph_project_token>');
   config.debug = true;
   // captureApplicationLifecycleEvents is enabled by default since version 5.23.0
-  config.host = 'https://us.i.posthog.com';
+  config.host = 'https://p.anny.cloud';
   await Posthog().setup(config);
   runApp(MyApp());
 }
@@ -202,13 +186,12 @@ Add your `Web snippet` (which you can find in [your project settings](https://po
 
 web/index.html
 
-PostHog AI
-
 ```html
 <!DOCTYPE html>
 <html>
   <head>
     <!-- ... other head elements ... -->
+
     <script async>
       !(function (t, e) {
         var o, n, p, r;
@@ -232,13 +215,23 @@ PostHog AI
             for (
               void 0 !== a ? (u = e[a] = []) : (a = "posthog"),
                 u.people = u.people || [],
-                u.toString = function (t) {
-                  var e = "posthog";
-                  return ("posthog" !== a && (e += "." + a), t || (e += " (stub)"), e);
-                },
-                u.people.toString = function () {
-                  return u.toString(1) + ".people (stub)";
-                },
+                Object.defineProperty(u, "toString", {
+                  configurable: !0,
+                  enumerable: !0,
+                  writable: !0,
+                  value: function (t) {
+                    var e = "posthog";
+                    return ("posthog" !== a && (e += "." + a), t || (e += " (stub)"), e);
+                  },
+                }),
+                Object.defineProperty(u.people, "toString", {
+                  configurable: !0,
+                  enumerable: !0,
+                  writable: !0,
+                  value: function () {
+                    return u.toString(1) + ".people (stub)";
+                  },
+                }),
                 o =
                   "capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagResult reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys getNextSurveyStep onSessionId".split(
                     " ",
@@ -253,11 +246,12 @@ PostHog AI
           (e.__SV = 1));
       })(document, window.posthog || []);
       posthog.init("<ph_project_token>", {
-        api_host: "https://us.i.posthog.com", // 'https://us.i.posthog.com' or 'https://eu.i.posthog.com'
+        api_host: "https://p.anny.cloud", // 'https://p.anny.cloud'
         defaults: "2026-05-30",
       });
     </script>
   </head>
+
   <!-- other elements -->
 </html>
 ```
@@ -269,8 +263,6 @@ For more information please check: /docs/libraries/js
 You can send custom events using `capture`:
 
 Dart
-
-PostHog AI
 
 ```dart
 await Posthog().capture(
@@ -285,8 +277,6 @@ await Posthog().capture(
 Optionally, you can include additional information with the event by including a [properties](/docs/data/events.md#event-properties) object:
 
 Dart
-
-PostHog AI
 
 ```dart
 await Posthog().capture(
@@ -323,12 +313,12 @@ Add the `PosthogObserver` to record screen views automatically:
 
 Dart
 
-PostHog AI
-
 ```dart
 import 'package:flutter/material.dart';
 import 'package:posthog_flutter/posthog_flutter.dart';
+
 void main() => runApp(MyApp());
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -348,8 +338,6 @@ Name your routes:
 
 Dart
 
-PostHog AI
-
 ```dart
 ...
 MaterialPageRoute(builder: (context) => const HomeScreenRoute(),
@@ -364,12 +352,11 @@ Add the `PosthogObserver` to record screen views automatically:
 
 Dart
 
-PostHog AI
-
 ```dart
 import 'package:flutter/material.dart';
 import 'package:posthog_flutter/posthog_flutter.dart';
 import 'package:go_router/go_router.dart';
+
 // GoRouter configuration
 final _router = GoRouter(
   routes: [
@@ -378,6 +365,7 @@ final _router = GoRouter(
   // The PosthogObserver records screen views automatically
   observers: [PosthogObserver()],
 );
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -392,8 +380,6 @@ class MyApp extends StatelessWidget {
 Name your routes:
 
 Dart
-
-PostHog AI
 
 ```dart
 ...
@@ -417,8 +403,6 @@ An `identify` call has the following arguments:
 -   **userPropertiesSetOnce:** Optional. Similar to `userProperties`. [See the difference between `userProperties` and `userPropertiesSetOnce`](/docs/product-analytics/person-properties.md#what-is-the-difference-between-set-and-set_once)
 
 Dart
-
-PostHog AI
 
 ```dart
 await Posthog().identify(
@@ -445,8 +429,6 @@ Sometimes, you want to assign multiple distinct IDs to a single user. This is he
 In this case, you can use `alias` to assign another distinct ID to the same user.
 
 Dart
-
-PostHog AI
 
 ```dart
 await Posthog().alias(
@@ -494,11 +476,9 @@ For example:
 
 Dart
 
-PostHog AI
-
 ```dart
 final config = PostHogConfig('<ph_project_token>');
-config.host = 'https://us.i.posthog.com';
+config.host = 'https://p.anny.cloud';
 config.personProfiles = PostHogPersonProfiles.identifiedOnly;
 ```
 
@@ -524,10 +504,9 @@ For example, take a look at the following call:
 
 Dart
 
-PostHog AI
-
 ```dart
 import 'package:posthog_flutter/posthog_flutter.dart';
+
 await Posthog().register("team_id", 22);
 ```
 
@@ -541,10 +520,9 @@ Super properties are persisted across sessions so you have to explicitly remove 
 
 Dart
 
-PostHog AI
-
 ```dart
 import 'package:posthog_flutter/posthog_flutter.dart';
+
 await Posthog().unregister("team_id");
 ```
 
@@ -566,12 +544,11 @@ PostHog's [feature flags](/docs/feature-flags.md) enable you to safely deploy an
 
 Dart
 
-PostHog AI
-
 ```dart
 final result = await Posthog().getFeatureFlagResult('flag-key');
 if (result != null && result.enabled) {
   // Do something differently for this user
+
   // Optional: fetch the payload from the same evaluation result
   final matchedFlagPayload = result.payload;
 }
@@ -581,12 +558,11 @@ if (result != null && result.enabled) {
 
 Dart
 
-PostHog AI
-
 ```dart
 final result = await Posthog().getFeatureFlagResult('flag-key');
 if (result != null && result.variant == 'variant-key') { // replace 'variant-key' with the key of your variant
   // Do something differently for this user
+
   // Optional: fetch the payload from the same evaluation result
   final matchedFlagPayload = result.payload;
 }
@@ -604,11 +580,9 @@ To handle this, you can use the `onFeatureFlags` callback in your config to be n
 
 Dart
 
-PostHog AI
-
 ```dart
 final config = PostHogConfig('<ph_project_token>');
-config.host = 'https://us.i.posthog.com';
+config.host = 'https://p.anny.cloud';
 config.onFeatureFlags = () async {
   if (await Posthog().isFeatureEnabled('flag-key')) {
     // do something
@@ -622,8 +596,6 @@ await Posthog().setup(config);
 Feature flag values are cached. If something has changed with your user and you'd like to refetch their flag values, call:
 
 Dart
-
-PostHog AI
 
 ```dart
 await Posthog().reloadFeatureFlags();
@@ -639,11 +611,9 @@ Set `config.bootstrap` before calling `setup()` to seed identity and flag values
 
 Dart
 
-PostHog AI
-
 ```dart
 final config = PostHogConfig('<ph_project_token>');
-config.host = 'https://us.i.posthog.com';
+config.host = 'https://p.anny.cloud';
 config.bootstrap = PostHogBootstrapConfig(
   distinctId: 'distinct_id_of_your_user',
   isIdentifiedId: true,
@@ -672,14 +642,13 @@ If a flag targets person or group properties, you can send those properties inli
 
 Dart
 
-PostHog AI
-
 ```dart
 // Person properties — included in the next flag evaluation request
 await Posthog().setPersonPropertiesForFlags({
   'storefront_country': 'US',
   'is_beta_user': true,
 });
+
 // Group properties
 await Posthog().setGroupPropertiesForFlags('company', {'plan': 'enterprise'});
 ```
@@ -728,8 +697,6 @@ You can also configure the flush interval with `flushInterval` (default 30 secon
 
 Dart
 
-PostHog AI
-
 ```dart
 final config = PostHogConfig('<ph_project_token>');
 config.flushAt = 20;
@@ -739,8 +706,6 @@ config.flushInterval = const Duration(seconds: 30);
 You can also manually flush the queue to start sending events immediately instead of waiting for the next batch:
 
 Dart
-
-PostHog AI
 
 ```dart
 await Posthog().flush();
@@ -762,8 +727,6 @@ You can disable data collection for a user at any time using the `disable()` met
 
 Dart
 
-PostHog AI
-
 ```dart
 await Posthog().disable();
 ```
@@ -772,8 +735,6 @@ This prevents any future events from being sent. It doesn't remove events alread
 
 Dart
 
-PostHog AI
-
 ```dart
 await Posthog().enable();
 ```
@@ -781,8 +742,6 @@ await Posthog().enable();
 To check if a user is opted out:
 
 Dart
-
-PostHog AI
 
 ```dart
 await Posthog().isOptOut();
@@ -798,11 +757,10 @@ Since version 5.13.0, you can provide `beforeSend` callbacks when initializing t
 
 Dart
 
-PostHog AI
-
 ```dart
 final config = PostHogConfig('<ph_project_token>');
-config.host = 'https://us.i.posthog.com';
+config.host = 'https://p.anny.cloud';
+
 config.beforeSend = [
   (event) {
     // Redact email from properties
@@ -812,6 +770,7 @@ config.beforeSend = [
     return event;
   },
 ];
+
 await Posthog().setup(config);
 ```
 
@@ -820,8 +779,6 @@ await Posthog().setup(config);
 Return `null` from the callback to drop the event:
 
 Dart
-
-PostHog AI
 
 ```dart
 config.beforeSend = [
@@ -843,10 +800,9 @@ Because it's just a function, you can filter however you like – an **ignorelis
 
 Dart
 
-PostHog AI
-
 ```dart
 const ignoredScreens = {'Splash', 'Debug'};
+
 config.beforeSend = [
   (event) {
     final screenName = event.properties?['$screen_name'];
@@ -881,11 +837,9 @@ You can enable debug mode during initialization by setting the `debug` option to
 
 Dart
 
-PostHog AI
-
 ```dart
 final config = PostHogConfig('<ph_project_token>');
-config.host = 'https://us.i.posthog.com';
+config.host = 'https://p.anny.cloud';
 config.debug = true;
 await Posthog().setup(config);
 ```
@@ -895,8 +849,6 @@ This will enable verbose logs about the inner workings of the SDK.
 You can also enable debug by calling the `Posthog().debug()` method in your code.
 
 Dart
-
-PostHog AI
 
 ```dart
 await Posthog().debug(true);

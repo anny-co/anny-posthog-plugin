@@ -41,7 +41,7 @@ Create a `.env` file in the root directory:
 
 ```bash
 NUXT_PUBLIC_POSTHOG_PROJECT_TOKEN=your_posthog_project_token
-NUXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
+NUXT_PUBLIC_POSTHOG_HOST=https://p.anny.cloud
 
 # Optional: For source map uploads
 PROJECT_ID=your_project_id
@@ -108,13 +108,13 @@ export default defineNuxtConfig({
     public: {
       posthog: {
         publicKey: process.env.NUXT_PUBLIC_POSTHOG_PROJECT_TOKEN || '',
-        host: process.env.NUXT_PUBLIC_POSTHOG_HOST || 'https://us.i.posthog.com',
+        host: process.env.NUXT_PUBLIC_POSTHOG_HOST || 'https://p.anny.cloud',
       },
     },
   },
   posthogConfig: {
     publicKey: process.env.NUXT_PUBLIC_POSTHOG_PROJECT_TOKEN || '',
-    host: process.env.NUXT_PUBLIC_POSTHOG_HOST || 'https://us.i.posthog.com',
+    host: process.env.NUXT_PUBLIC_POSTHOG_HOST || 'https://p.anny.cloud',
     clientConfig: {
       capture_exceptions: true, // Enables automatic exception capture on the client side (Vue)
       tracing_headers: ['localhost', 'yourdomain.com'], // Add your domain here
@@ -870,13 +870,13 @@ export default defineNuxtConfig({
     public: {
       posthog: {
         publicKey: process.env.NUXT_PUBLIC_POSTHOG_PROJECT_TOKEN || '',
-        host: process.env.NUXT_PUBLIC_POSTHOG_HOST || 'https://us.i.posthog.com',
+        host: process.env.NUXT_PUBLIC_POSTHOG_HOST || 'https://p.anny.cloud',
       },
     },
   },
   posthogConfig: {
     publicKey: process.env.NUXT_PUBLIC_POSTHOG_PROJECT_TOKEN || '', // Find it in project settings https://posthog.anny.cloud/settings/project
-    host: process.env.NUXT_PUBLIC_POSTHOG_HOST || 'https://us.i.posthog.com', // Optional: defaults to https://us.i.posthog.com. Use https://eu.i.posthog.com for EU region
+    host: process.env.NUXT_PUBLIC_POSTHOG_HOST || 'https://p.anny.cloud',
     clientConfig: {
       capture_exceptions: true, // Enables automatic exception capture on the client side (Vue)
       tracing_headers: [ 'localhost', 'yourdomain.com' ], // Add your domain here

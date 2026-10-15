@@ -1,10 +1,6 @@
 > AI agents: this is one page from PostHog's docs. Full index of Markdown docs for LLMs: https://posthog.com/llms.txt
 
-# Flutter Feature Flags installation - Docs
-
-Copy page
-
-# Flutter Feature Flags installation - Docs
+# Flutter Feature Flags installation
 
 1.  1
 
@@ -15,8 +11,6 @@ Copy page
     Add the PostHog Flutter SDK to your `pubspec.yaml`:
 
     pubspec.yaml
-
-    PostHog AI
 
     ```yaml
     posthog_flutter: ^5.24.0
@@ -34,15 +28,13 @@ Copy page
 
     android/app/src/main/AndroidManifest.xml
 
-    PostHog AI
-
     ```xml
     <application>
       <activity>
         [...]
       </activity>
       <meta-data android:name="com.posthog.posthog.PROJECT_TOKEN" android:value="<ph_project_token>" />
-      <meta-data android:name="com.posthog.posthog.POSTHOG_HOST" android:value="https://us.i.posthog.com" />
+      <meta-data android:name="com.posthog.posthog.POSTHOG_HOST" android:value="https://p.anny.cloud" />
       <meta-data android:name="com.posthog.posthog.TRACK_APPLICATION_LIFECYCLE_EVENTS" android:value="true" />
       <meta-data android:name="com.posthog.posthog.DEBUG" android:value="true" />
     </application>
@@ -51,8 +43,6 @@ Copy page
     Update the minimum Android SDK version to **21** in `android/app/build.gradle`:
 
     android/app/build.gradle
-
-    PostHog AI
 
     ```groovy
     defaultConfig {
@@ -67,15 +57,13 @@ Copy page
 
     ios/Runner/Info.plist
 
-    PostHog AI
-
     ```xml
     <dict>
       [...]
       <key>com.posthog.posthog.PROJECT_TOKEN</key>
       <string><ph_project_token></string>
       <key>com.posthog.posthog.POSTHOG_HOST</key>
-      <string>https://us.i.posthog.com</string>
+      <string>https://p.anny.cloud</string>
       <key>com.posthog.posthog.CAPTURE_APPLICATION_LIFECYCLE_EVENTS</key>
       <true/>
       <key>com.posthog.posthog.DEBUG</key>
@@ -86,8 +74,6 @@ Copy page
     Update the minimum platform version to iOS 13.0 in your `Podfile`:
 
     Podfile
-
-    PostHog AI
 
     ```ruby
     platform :ios, '13.0'
@@ -100,17 +86,15 @@ Copy page
 
     web/index.html
 
-    PostHog AI
-
     ```html
     <!DOCTYPE html>
     <html>
       <head>
         ...
         <script>
-          !function(t,e){var o,n,p,r;e.__SV||(window.posthog && window.posthog.__loaded)||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}p||((p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",p.onerror=function(){p=null},(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r));var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group identify setPersonProperties setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags resetGroups onFeatureFlags addFeatureFlagsHandler onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+          !function(t,e){var o,n,p,r;e.__SV||(window.posthog && window.posthog.__loaded)||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}p||((p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",p.onerror=function(){p=null},(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r));var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],Object.defineProperty(u,"toString",{configurable:!0,enumerable:!0,writable:!0,value:function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e}}),Object.defineProperty(u.people,"toString",{configurable:!0,enumerable:!0,writable:!0,value:function(){return u.toString(1)+".people (stub)"}}),o="init capture register register_once register_for_session unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group identify setPersonProperties setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags resetGroups onFeatureFlags addFeatureFlagsHandler onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
           posthog.init('<ph_project_token>', {
-              api_host: 'https://us.i.posthog.com',
+              api_host: 'https://p.anny.cloud',
               defaults: '2026-05-30',
           })
         </script>
@@ -131,10 +115,9 @@ Copy page
 
     Dart
 
-    PostHog AI
-
     ```dart
     import 'package:posthog_flutter/posthog_flutter.dart';
+    
     await Posthog().capture(
         eventName: 'button_clicked',
         properties: {
@@ -152,8 +135,6 @@ Copy page
     Check if a feature flag is enabled:
 
     Dart
-
-    PostHog AI
 
     ```dart
     final isMyFlagEnabled = await Posthog().isFeatureEnabled('flag-key');
@@ -173,8 +154,6 @@ Copy page
     For multivariate flags, check which variant the user has been assigned:
 
     Dart
-
-    PostHog AI
 
     ```dart
     final enabledVariant = await Posthog().getFeatureFlag('flag-key');

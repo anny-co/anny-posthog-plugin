@@ -1,10 +1,6 @@
 > AI agents: this is one page from PostHog's docs. Full index of Markdown docs for LLMs: https://posthog.com/llms.txt
 
-# PHP Error Tracking installation - Docs
-
-Copy page
-
-# PHP Error Tracking installation - Docs
+# PHP Error Tracking installation
 
 1.  1
 
@@ -15,8 +11,6 @@ Copy page
     Install the [PostHog PHP SDK](/docs/libraries/php.md) via Composer:
 
     Terminal
-
-    PostHog AI
 
     ```bash
     composer require posthog/posthog-php
@@ -32,12 +26,10 @@ Copy page
 
     PHP
 
-    PostHog AI
-
     ```php
     PostHog\PostHog::init(
         '<ph_project_token>',
-        ['host' => 'https://us.i.posthog.com']
+        ['host' => 'https://p.anny.cloud']
     );
     ```
 
@@ -55,8 +47,6 @@ Copy page
 
     PHP
 
-    PostHog AI
-
     ```php
     try {
         // Your code that might throw
@@ -71,8 +61,6 @@ Copy page
     You can pass extra properties to include with the exception event:
 
     PHP
-
-    PostHog AI
 
     ```php
     try {
@@ -97,13 +85,11 @@ Copy page
 
     PHP
 
-    PostHog AI
-
     ```php
     PostHog\PostHog::init(
         '<ph_project_token>',
         [
-            'host' => 'https://us.i.posthog.com',
+            'host' => 'https://p.anny.cloud',
             'error_tracking' => [
                 'enabled' => true,
             ],
@@ -125,13 +111,11 @@ Copy page
 
     PHP
 
-    PostHog AI
-
     ```php
     PostHog\PostHog::init(
         '<ph_project_token>',
         [
-            'host' => 'https://us.i.posthog.com',
+            'host' => 'https://p.anny.cloud',
             'error_tracking' => [
                 'enabled' => true,
                 'context_provider' => static function (array $payload): array {
@@ -159,13 +143,11 @@ Copy page
 
     PHP
 
-    PostHog AI
-
     ```php
     PostHog\PostHog::init(
         '<ph_project_token>',
         [
-            'host' => 'https://us.i.posthog.com',
+            'host' => 'https://p.anny.cloud',
             'error_tracking' => [
                 'enabled' => true,
                 'capture_errors' => true,
@@ -186,11 +168,11 @@ Copy page
 
     | Option | Type | Default | Description |
     | --- | --- | --- | --- |
-    | enabled | boolean | false | Enables automatic error tracking handlers. Manual captureException works regardless. |
-    | capture_errors | boolean | true | When enabled, also captures PHP errors and fatal shutdown errors in addition to uncaught exceptions. |
-    | excluded_exceptions | array of class strings | [] | Throwable classes to skip during automatic capture. |
-    | max_frames | integer | 20 | Maximum number of stack frames included in $exception_list. |
-    | context_provider | callable or null | null | Callback that returns distinctId and extra event properties for automatic captures. |
+    | `enabled` | boolean | `false` | Enables automatic error tracking handlers. Manual `captureException` works regardless. |
+    | `capture_errors` | boolean | `true` | When enabled, also captures PHP errors and fatal shutdown errors in addition to uncaught exceptions. |
+    | `excluded_exceptions` | array of class strings | `[]` | Throwable classes to skip during automatic capture. |
+    | `max_frames` | integer | `20` | Maximum number of stack frames included in `$exception_list`. |
+    | `context_provider` | callable or `null` | `null` | Callback that returns `distinctId` and extra event properties for automatic captures. |
 
 7.  ## Verify error tracking
 
@@ -200,18 +182,17 @@ Copy page
 
     PHP
 
-    PostHog AI
-
     ```php
     PostHog\PostHog::init(
         '<ph_project_token>',
         [
-            'host' => 'https://us.i.posthog.com',
+            'host' => 'https://p.anny.cloud',
             'error_tracking' => [
                 'enabled' => true,
             ],
         ]
     );
+    
     try {
         throw new \Exception('Test exception from PHP');
     } catch (\Throwable $e) {

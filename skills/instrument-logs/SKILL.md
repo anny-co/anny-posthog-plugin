@@ -51,30 +51,30 @@ STEP 6: Add structured properties.
 STEP 7: Set up environment variables.
   - Check if the project already has PostHog environment variables configured (e.g. in `.env`, `.env.local`, or framework-specific env files). If valid values already exist, skip this step.
   - If the PostHog project token is missing, use the PostHog MCP server's `projects-get` tool to retrieve the project's `api_token`. If multiple projects are returned, ask the user which project to use. If the MCP server is not connected or not authenticated, ask the user for their PostHog project token instead.
-  - For the PostHog host URL: check the `projects-get` MCP response for a `region` field — `US` maps to `https://us.i.posthog.com`, `EU` maps to `https://eu.i.posthog.com`. If the region is not available from the MCP response or from existing project configuration, ask the user: "Are you on PostHog US Cloud or EU Cloud?" Do not assume US Cloud.
-  - For the OpenTelemetry endpoint, use `https://us.i.posthog.com/v1` (US) or `https://eu.i.posthog.com/v1` (EU), matching the region determined above.
+  - For the PostHog host URL: check the `projects-get` MCP response for a `region` field — use `https://p.anny.cloud`.
+  - For the OpenTelemetry endpoint, use `https://p.anny.cloud/v1`.
   - Write these values to the appropriate env file using the framework's naming convention.
   - Reference these environment variables in code instead of hardcoding them.
 
 ## Reference files
 
-- `references/nextjs.md` - Next.js logs installation - docs
-- `references/nodejs.md` - Node.js logs installation - docs
-- `references/python.md` - Python logs installation - docs
-- `references/go.md` - Go logs installation - docs
-- `references/java.md` - Java logs installation - docs
-- `references/datadog.md` - Datadog logs installation - docs
-- `references/android.md` - Android logs installation - docs
-- `references/react-native.md` - React native logs installation - docs
-- `references/ios.md` - Ios logs installation - docs
-- `references/flutter.md` - Flutter logs installation - docs
-- `references/other.md` - Other languages logs installation - docs
-- `references/start-here.md` - Getting started with logs - docs
-- `references/search.md` - Search logs - docs
-- `references/best-practices.md` - Logging best practices - docs
-- `references/troubleshooting.md` - Logs troubleshooting - docs
-- `references/link-session-replay.md` - Link session replay - docs
-- `references/mcp.md` - Use logs over PostHog mcp - docs
+- `references/nextjs.md` - Next.js logs installation
+- `references/nodejs.md` - Node.js logs installation
+- `references/python.md` - Python logs installation
+- `references/go.md` - Go logs installation
+- `references/java.md` - Java logs installation
+- `references/datadog.md` - Datadog logs installation
+- `references/android.md` - Android logs installation
+- `references/react-native.md` - React native logs installation
+- `references/ios.md` - Ios logs installation
+- `references/flutter.md` - Flutter logs installation
+- `references/other.md` - Other languages logs installation
+- `references/start-here.md` - Getting started with logs
+- `references/search.md` - Search logs
+- `references/best-practices.md` - Logging best practices
+- `references/troubleshooting.md` - Logs troubleshooting
+- `references/link-session-replay.md` - Link session replay
+- `references/mcp.md` - Use logs over PostHog mcp
 - `references/COMMANDMENTS.md` - Framework-specific rules the integration must follow
 
 Each platform reference contains specific OTLP configuration, SDK setup, and integration patterns. Find the one matching the user's stack.

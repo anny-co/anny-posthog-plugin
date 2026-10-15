@@ -143,7 +143,7 @@ basics/flask/
 
 ```example
 POSTHOG_PROJECT_TOKEN=<ph_project_token>
-POSTHOG_HOST=https://us.i.posthog.com
+POSTHOG_HOST=https://p.anny.cloud
 FLASK_SECRET_KEY=your-secret-key-here
 FLASK_DEBUG=True
 POSTHOG_DISABLED=False
@@ -331,7 +331,7 @@ class Config:
 
     # PostHog configuration
     POSTHOG_PROJECT_TOKEN = os.environ.get("POSTHOG_PROJECT_TOKEN", "<ph_project_token>")
-    POSTHOG_HOST = os.environ.get("POSTHOG_HOST", "https://us.i.posthog.com")
+    POSTHOG_HOST = os.environ.get("POSTHOG_HOST", "https://p.anny.cloud")
     POSTHOG_DISABLED = os.environ.get("POSTHOG_DISABLED", "False").lower() == "true"
 
 
