@@ -1,10 +1,6 @@
 > AI agents: this is one page from PostHog's docs. Full index of Markdown docs for LLMs: https://posthog.com/llms.txt
 
-# Logs troubleshooting - Docs
-
-Copy page
-
-# Logs troubleshooting - Docs
+# Logs troubleshooting
 
 This page covers troubleshooting for Logs. For setup, see the [installation guide](/docs/logs/installation.md).
 
@@ -25,7 +21,7 @@ This page covers troubleshooting for Logs. For setup, see the [installation guid
 
 **Solutions**:
 
--   Verify the endpoint URL: `https://us.i.posthog.com/i/v1/logs`
+-   Verify the endpoint URL: `https://p.anny.cloud/i/v1/logs`
 -   Check that your application can make outbound HTTPS requests
 -   Ensure firewall rules allow outbound connections to PostHog
 -   For self-hosted instances, verify the endpoint is correct for your deployment
@@ -104,7 +100,7 @@ This page covers troubleshooting for Logs. For setup, see the [installation guid
 
 **Solutions**:
 
--   Use your self-hosted instance URL instead of `https://us.i.posthog.com`
+-   Use your self-hosted instance URL instead of `https://p.anny.cloud`
 -   Verify the logs endpoint is enabled on your self-hosted instance
 -   Check that the endpoint path is correct: `/logs`
 -   Ensure your PostHog version supports the logs feature

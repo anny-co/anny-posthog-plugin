@@ -61,7 +61,7 @@ import PostHog
 
 // The project token is a public client-side key, so it's safe to ship in the
 // binary. Replace the placeholder with your token from the PostHog project settings.
-let config = PostHogConfig(apiKey: "<your-project-token>", host: "https://us.i.posthog.com")
+let config = PostHogConfig(apiKey: "<your-project-token>", host: "https://p.anny.cloud")
 config.captureApplicationLifecycleEvents = true
 PostHogSDK.shared.setup(config)
 ```
@@ -218,7 +218,7 @@ PostHogSDK.shared.reset()
          </EnvironmentVariable>
          <EnvironmentVariable
             key = "POSTHOG_HOST"
-            value = "https://us.i.posthog.com"
+            value = "https://p.anny.cloud"
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>
@@ -273,7 +273,7 @@ import PostHog
 // iOS. Replace the placeholder below with your project token from
 // https://posthog.anny.cloud/project/settings.
 private let posthogProjectToken = "<your-project-token>"
-private let posthogHost = "https://us.i.posthog.com"
+private let posthogHost = "https://p.anny.cloud"
 
 @main
 struct BurritoConsiderationClientApp: App {

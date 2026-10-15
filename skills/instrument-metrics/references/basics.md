@@ -1,10 +1,6 @@
 > AI agents: this is one page from PostHog's docs. Full index of Markdown docs for LLMs: https://posthog.com/llms.txt
 
-# Why you need metrics - Docs
-
-Copy page
-
-# Why you need metrics - Docs
+# Why you need metrics
 
 Metrics are numbers about your system measured over time: how many requests you served, how long they took, how deep the job queue is, how much memory a process is using. Where [logs](/docs/logs.md) record individual events and [traces](/docs/distributed-tracing.md) follow individual requests, metrics summarize everything. They answer "how is the system doing?" at a glance, cheaply, all the time.
 
@@ -46,7 +42,7 @@ The same goes for error budgets and latency. A `rate` on an error counter divide
 
 Most teams keep metrics in a separate system from everything else, so answering "did that latency spike affect signups?" means tab switching and timestamp matching. In PostHog, metrics live alongside your [logs](/docs/logs.md), [traces](/docs/distributed-tracing.md), product analytics, and session replays, in the same project with the same query language.
 
-Everything is queryable as SQL through the `posthog.metrics` table, and the [PostHog MCP server](/docs/model-context-protocol.md) exposes metrics to AI agents, so your tools can chart, compare, and investigate metrics for you.
+Everything is queryable as SQL through the `posthog.metrics` table, and the [PostHog MCP server](/docs/model-context-protocol.md) exposes metrics to AI agents, so your tools can chart, compare, and investigate metrics for you. When you chart a metric that has moved against its baseline, an anomaly badge surfaces the change and the label values behind it, and the raw samples stay linked to the logs and traces that explain them.
 
 ## Next steps
 

@@ -42,7 +42,7 @@ cp .env.example .env
 
 # Edit .env and add your PostHog project token
 # POSTHOG_PROJECT_TOKEN=phc_your_project_token_here
-# POSTHOG_HOST=https://us.i.posthog.com
+# POSTHOG_HOST=https://p.anny.cloud
 ```
 
 ### 3. Run the App
@@ -162,7 +162,7 @@ The app works fine without PostHog configured - it simply won't track analytics.
 ```example
 # PostHog configuration
 POSTHOG_PROJECT_TOKEN=phc_your_project_token_here
-POSTHOG_HOST=https://us.i.posthog.com
+POSTHOG_HOST=https://p.anny.cloud
 
 ```
 
@@ -227,7 +227,7 @@ function initializePostHog(): bool
     }
 
     PostHog::init($projectToken, [
-        'host' => getenv('POSTHOG_HOST') ?: 'https://us.i.posthog.com',
+        'host' => getenv('POSTHOG_HOST') ?: 'https://p.anny.cloud',
         'error_tracking' => [
             'enabled' => true,
             'context_provider' => static function (array $payload): array {

@@ -46,7 +46,7 @@ cp .env.example .env
 
 # Edit .env and add your PostHog project token
 # POSTHOG_PROJECT_TOKEN=phc_your_project_token_here
-# POSTHOG_HOST=https://us.i.posthog.com
+# POSTHOG_HOST=https://p.anny.cloud
 ```
 
 ### 3. Run the App
@@ -100,7 +100,7 @@ require 'posthog-ruby'
 
 posthog = PostHog::Client.new(
   api_key: api_key,
-  host: 'https://us.i.posthog.com',
+  host: 'https://p.anny.cloud',
   on_error: proc { |status, msg| puts "PostHog error: #{status} - #{msg}" }
 )
 ```
@@ -160,7 +160,7 @@ The app works fine without PostHog configured - it simply won't track analytics.
 ```example
 # PostHog Configuration
 POSTHOG_PROJECT_TOKEN=phc_your_project_token_here
-POSTHOG_HOST=https://us.i.posthog.com
+POSTHOG_HOST=https://p.anny.cloud
 
 # Optional: Enable debug mode to see PostHog requests
 # POSTHOG_DEBUG=true
@@ -214,7 +214,7 @@ def initialize_posthog
 
   PostHog::Client.new(
     api_key: project_token,
-    host: ENV.fetch('POSTHOG_HOST', 'https://us.i.posthog.com'),
+    host: ENV.fetch('POSTHOG_HOST', 'https://p.anny.cloud'),
     on_error: proc { |status, msg| puts "PostHog error: #{status} - #{msg}" }
   )
 end

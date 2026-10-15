@@ -38,7 +38,7 @@ Edit `.env` with your PostHog project token:
 
 ```
 PUBLIC_POSTHOG_PROJECT_TOKEN=your_posthog_project_token_here
-PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
+PUBLIC_POSTHOG_HOST=https://p.anny.cloud
 ```
 
 You can find your project token in your [PostHog project settings](https://posthog.anny.cloud/project/settings).
@@ -127,8 +127,8 @@ export const handle: Handle = async ({ event, resolve }) => {
   if (event.url.pathname.startsWith('/ingest')) {
     const pathname = event.url.pathname.replace('/ingest', '');
     const host = pathname.startsWith('/static')
-      ? 'https://us-assets.i.posthog.com'
-      : 'https://us.i.posthog.com';
+      ? 'https://p.anny.cloud'
+      : 'https://p.anny.cloud';
     // Proxy to PostHog...
   }
   return resolve(event);
@@ -206,7 +206,7 @@ export default {
 # PostHog configuration
 # Get your PostHog project token from: https://posthog.anny.cloud/project/settings
 PUBLIC_POSTHOG_PROJECT_TOKEN=your_posthog_project_token_here
-PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
+PUBLIC_POSTHOG_HOST=https://p.anny.cloud
 
 ```
 

@@ -40,7 +40,7 @@ Create a `.env` file in the root directory:
 
 ```bash
 NUXT_PUBLIC_POSTHOG_PROJECT_TOKEN=your_posthog_project_token
-NUXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
+NUXT_PUBLIC_POSTHOG_HOST=https://p.anny.cloud
 ```
 
 Get your PostHog project token from your [PostHog project settings](https://posthog.anny.cloud/project/settings).

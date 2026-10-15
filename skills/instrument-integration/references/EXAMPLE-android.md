@@ -38,7 +38,7 @@ The PostHog configuration is stored in `local.properties` (this file is gitignor
 ```properties
 # PostHog configuration
 posthog.apiKey=your_posthog_project_token
-posthog.host=https://us.i.posthog.com
+posthog.host=https://p.anny.cloud
 ```
 
 Alternatively, you can configure PostHog in your `build.gradle` file:
@@ -47,7 +47,7 @@ Alternatively, you can configure PostHog in your `build.gradle` file:
 android {
     defaultConfig {
         buildConfigField "String", "POSTHOG_PROJECT_TOKEN", "\"your_posthog_project_token\""
-        buildConfigField "String", "POSTHOG_HOST", "\"https://us.i.posthog.com\""
+        buildConfigField "String", "POSTHOG_HOST", "\"https://p.anny.cloud\""
     }
 }
 ```
@@ -269,7 +269,7 @@ android {
     defaultConfig {
         // PostHog configuration
         buildConfigField "String", "POSTHOG_PROJECT_TOKEN", "\"${project.findProperty("posthog.apiKey") ?: ""}\""
-        buildConfigField "String", "POSTHOG_HOST", "\"${project.findProperty("posthog.host") ?: "https://us.i.posthog.com"}\""
+        buildConfigField "String", "POSTHOG_HOST", "\"${project.findProperty("posthog.host") ?: "https://p.anny.cloud"}\""
     }
 }
 
@@ -292,7 +292,7 @@ localProperties.load(new FileInputStream(rootProject.file("local.properties")))
 android {
     defaultConfig {
         buildConfigField "String", "POSTHOG_PROJECT_TOKEN", "\"${localProperties.getProperty("posthog.apiKey", "")}\""
-        buildConfigField "String", "POSTHOG_HOST", "\"${localProperties.getProperty("posthog.host", "https://us.i.posthog.com")}\""
+        buildConfigField "String", "POSTHOG_HOST", "\"${localProperties.getProperty("posthog.host", "https://p.anny.cloud")}\""
     }
 }
 ```

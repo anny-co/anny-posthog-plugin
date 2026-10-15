@@ -1,10 +1,6 @@
 > AI agents: this is one page from PostHog's docs. Full index of Markdown docs for LLMs: https://posthog.com/llms.txt
 
-# Hono Error Tracking installation - Docs
-
-Copy page
-
-# Hono Error Tracking installation - Docs
+# Hono Error Tracking installation
 
 1.  1
 
@@ -13,8 +9,6 @@ Copy page
     Required
 
     Install the PostHog Node.js library using your package manager:
-
-    PostHog AI
 
     ### npm
 
@@ -50,14 +44,13 @@ Copy page
 
     Node.js
 
-    PostHog AI
-
     ```javascript
     import { PostHog } from 'posthog-node'
+    
     const client = new PostHog(
         '<ph_project_token>',
         {
-            host: 'https://us.i.posthog.com'
+            host: 'https://p.anny.cloud'
         }
     )
     ```
@@ -71,8 +64,6 @@ Copy page
     Once installed, you can manually send events to test your integration:
 
     Node.js
-
-    PostHog AI
 
     ```javascript
     client.capture({
@@ -97,11 +88,9 @@ Copy page
 
     index.ts
 
-    PostHog AI
-
     ```typescript
     import { PostHog } from 'posthog-node'
-    const posthog = new PostHog(process.env.POSTHOG_TOKEN, { host: 'https://us.i.posthog.com' })
+    const posthog = new PostHog(process.env.POSTHOG_TOKEN, { host: 'https://p.anny.cloud' })
     app.onError(async (err, c) => {
       posthog.captureException(err, 'user_distinct_id_with_err_rethrow', {
         path: c.req.path,
@@ -124,7 +113,7 @@ Copy page
 
     Before proceeding, let's make sure exception events are being captured and sent to PostHog. You should see events appear in the activity feed.
 
-    ![Activity feed with events](https://res.cloudinary.com/dmukukwp6/image/upload/SCR_20250729_ouxl_f788dd8cd2.png)![Activity feed with events](https://res.cloudinary.com/dmukukwp6/image/upload/SCR_20250729_owae_7c3490822c.png)
+    ![Activity feed with events](https://res.cloudinary.com/dmukukwp6/image/upload/SCR_20250729_ouxl_f788dd8cd2.png)
 
     [Check for exceptions in PostHog](https://posthog.anny.cloud/activity/explore)
 

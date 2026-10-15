@@ -1,12 +1,10 @@
 > AI agents: this is one page from PostHog's docs. Full index of Markdown docs for LLMs: https://posthog.com/llms.txt
 
-# Getting started with metrics - Docs
+# Getting started with metrics
 
-Copy page
+**Metrics is in open alpha**
 
-# Getting started with metrics - Docs
-
-> **Note:** Metrics is in alpha. Setup details, including the ingestion endpoint, may change before general availability.
+Any team can turn on metrics: open [Metrics](https://posthog.anny.cloud/metrics) in PostHog and select **Enable metrics** in the onboarding view. See [turn on metrics](/docs/metrics.md#turn-on-metrics) for the full flow. Setup details, including the ingestion endpoint, may change before general availability.
 
 ## Send your first metrics
 
@@ -15,8 +13,6 @@ There are three ways to get metrics into PostHog, and all take just a few minute
 If [posthog-js](/docs/libraries/js.md) is already running on your site, record metrics directly with the `posthog.metrics` API. No new packages, no extra authentication:
 
 JavaScript
-
-PostHog AI
 
 ```javascript
 posthog.metrics.count("checkout.completed");
@@ -28,10 +24,8 @@ If you use OpenTelemetry anywhere else (backend services, infrastructure, an exi
 
 Terminal
 
-PostHog AI
-
 ```bash
-OTEL_EXPORTER_OTLP_METRICS_ENDPOINT="https://us.i.posthog.com/i/v1/metrics"
+OTEL_EXPORTER_OTLP_METRICS_ENDPOINT="https://p.anny.cloud/i/v1/metrics"
 OTEL_EXPORTER_OTLP_METRICS_HEADERS="Authorization=Bearer <ph_project_token>"
 OTEL_SERVICE_NAME="my-app"
 ```
@@ -39,8 +33,6 @@ OTEL_SERVICE_NAME="my-app"
 If you run **Kubernetes** and your pods already expose Prometheus metrics, install the PostHog metrics agent Helm chart to scrape and forward them automatically:
 
 Terminal
-
-PostHog AI
 
 ```bash
 helm install posthog-metrics-agent oci://ghcr.io/posthog/charts/posthog-metrics-agent \
@@ -71,7 +63,7 @@ If you need to know what happened for one specific user or request, that's a job
 
 ## Verify metrics are arriving
 
-Open **Metrics** in the PostHog sidebar. Pick your metric from the name picker and you should see data points within a minute of sending. The viewer recommends an aggregation based on the metric's type, so a counter defaults to `increase` and a gauge to `avg`.
+Open **Metrics** in the PostHog sidebar. The **Overview** tab shows your services, metric names, and active series over the last day, so you can confirm data is landing. In the **Viewer** tab, pick your metric from the name picker and you should see data points within a minute of sending. The viewer recommends an aggregation based on the metric's type, so a counter defaults to `increase` and a gauge to `avg`.
 
 If nothing shows up, check that the endpoint ends in `/i/v1/metrics`, that the token starts with `phc_`, and see the [troubleshooting section](/docs/metrics.md#troubleshooting).
 
@@ -81,14 +73,18 @@ Once data flows, build the views you'll actually watch:
 
 -   **Group by** an attribute to get one line per value, for example request rate per route or queue depth per worker.
 -   **Filter** with `key=value` chips to focus on one service, environment, or status.
--   Switch to **stat mode** for a single headline number with an automatic comparison against the baseline.
--   Turn on **live** to refresh the chart every few seconds while you watch a deploy or an incident.
+-   Watch for the **anomaly badge** — when the metric moves against its baseline, it shows the change and the label values that drove it.
+-   Turn on **auto-refresh** to update the chart every few seconds while you watch a deploy or an incident.
+
+When a chart is worth keeping, **save it as an insight** or add it to a dashboard — or use **New service dashboard** to build one insight per metric in a single step.
 
 ## Query with SQL or ask AI
 
-Every metric lands in the `posthog.metrics` table, so the SQL tab in the metrics viewer gives you full query access for anything the chart controls don't cover.
+Every metric lands in the `posthog.metrics` table, so the **SQL** tab in the metrics viewer gives you full query access for anything the chart controls don't cover.
 
 If you use the [PostHog MCP server](/docs/model-context-protocol.md), your AI tools can query metrics directly: ask your agent to chart a metric, compare error rates between services, or characterize an anomaly, all without leaving your editor.
+
+For the full tour of the viewer — anomaly detection, pivoting into logs and traces, and dashboards — see [Use your metrics](/docs/metrics/explore.md).
 
 1/6
 

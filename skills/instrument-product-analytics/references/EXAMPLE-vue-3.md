@@ -42,7 +42,7 @@ Create a `.env` file in the project root:
 
 ```bash
 VITE_POSTHOG_PROJECT_TOKEN=your_posthog_project_token
-VITE_POSTHOG_HOST=https://us.i.posthog.com
+VITE_POSTHOG_HOST=https://p.anny.cloud
 ```
 
 Get your PostHog project token from your project settings in PostHog.
@@ -85,7 +85,7 @@ src/
 import posthog from 'posthog-js'
 
 posthog.init(import.meta.env.VITE_POSTHOG_PROJECT_TOKEN || '', {
-  api_host: import.meta.env.VITE_POSTHOG_HOST || 'https://us.i.posthog.com',
+  api_host: import.meta.env.VITE_POSTHOG_HOST || 'https://p.anny.cloud',
 })
 
 app.config.errorHandler = (err) => {
@@ -180,7 +180,7 @@ max_line_length = 100
 
 ```example
 VITE_POSTHOG_PROJECT_TOKEN=your_posthog_project_token
-VITE_POSTHOG_HOST=https://us.i.posthog.com
+VITE_POSTHOG_HOST=https://p.anny.cloud
 
 ```
 
@@ -391,7 +391,7 @@ import posthog from "posthog-js";
 const app = createApp(App);
 
 posthog.init(import.meta.env.VITE_POSTHOG_PROJECT_TOKEN || '', {
-  api_host: import.meta.env.VITE_POSTHOG_HOST || 'https://us.i.posthog.com',
+  api_host: import.meta.env.VITE_POSTHOG_HOST || 'https://p.anny.cloud',
   defaults: '2026-01-30',
 });
 

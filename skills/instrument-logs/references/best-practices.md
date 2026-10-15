@@ -1,10 +1,6 @@
 > AI agents: this is one page from PostHog's docs. Full index of Markdown docs for LLMs: https://posthog.com/llms.txt
 
-# Logging best practices - Docs
-
-Copy page
-
-# Logging best practices - Docs
+# Logging best practices
 
 Most logging is bad. Not because people don't log enough. They log too much of the wrong things and too little of the right things. The result is millions of lines that are expensive to store and useless to query.
 
@@ -43,8 +39,6 @@ If you've been capturing things like `database_connection_failed` or `stripe_api
 
 This is the single most important shift you can make.
 
-PostHog AI
-
 ```
 logger.info("Entering payment processing")
 logger.info("Validating card details")
@@ -63,8 +57,6 @@ Your `INFO`\-level logs should be wide events. Your `DEBUG`\-level logs can be a
 Instead, emit one rich log per request per service:
 
 JSON
-
-PostHog AI
 
 ```json
 {
@@ -95,8 +87,6 @@ Plain text logs are optimized for writing, not querying. Structured logs (JSON k
 
 **Bad:**
 
-PostHog AI
-
 ```
 Payment failed for user abc123 - Stripe error: card_declined (amount: $49.99)
 ```
@@ -104,8 +94,6 @@ Payment failed for user abc123 - Stripe error: card_declined (amount: $49.99)
 **Good:**
 
 JSON
-
-PostHog AI
 
 ```json
 {
@@ -172,22 +160,24 @@ Python's standard `logging` module with the `extra` parameter. The OpenTelemetry
 
 Python
 
-PostHog AI
-
 ```python
 import logging
+
 logger = logging.getLogger(__name__)
+
 def handle_checkout(request):
     attrs = {
         "event": "checkout",
         "posthogDistinctId": request.user.id,
         "subscription_tier": request.user.tier,
     }
+
     cart = get_cart(request.user)
     attrs.update({
         "item_count": len(cart.items),
         "cart_total_cents": cart.total_cents,
     })
+
     try:
         payment = process_payment(cart)
         attrs.update({
@@ -209,19 +199,21 @@ The OpenTelemetry Logs API with `logger.emit()`. Attributes are passed as a dict
 
 JavaScript
 
-PostHog AI
-
 ```javascript
 import { logs } from "@opentelemetry/api-logs";
+
 const logger = logs.getLogger("my-app");
+
 function handleCheckout(req, res) {
   const attrs = {
     event: "checkout",
     posthogDistinctId: req.user.id,
     subscription_tier: req.user.tier,
   };
+
   const cart = getCart(req.user);
   Object.assign(attrs, { item_count: cart.items.length, cart_total_cents: cart.totalCents });
+
   try {
     const payment = processPayment(cart);
     Object.assign(attrs, {
@@ -245,19 +237,19 @@ Go's standard `slog` package, bridged to OpenTelemetry via `otelslog` (configure
 
 Go
 
-PostHog AI
-
 ```go
 func HandleCheckout(w http.ResponseWriter, r *http.Request) {
     log := slog.With(
         "event", "checkout",
         "posthogDistinctId", r.Context().Value("posthogDistinctId"),
     )
+
     cart, _ := getCart(r.Context())
     log = log.With(
         "item_count", len(cart.Items),
         "cart_total_cents", cart.TotalCents,
     )
+
     payment, err := processPayment(r.Context(), cart)
     if err != nil {
         log.With(
@@ -266,6 +258,7 @@ func HandleCheckout(w http.ResponseWriter, r *http.Request) {
         ).ErrorContext(r.Context(), "checkout completed")
         return
     }
+
     log.With(
         "payment_method", payment.Method,
         "provider", payment.Provider,
@@ -291,10 +284,10 @@ Log levels exist to control signal-to-noise ratio. Use them consistently:
 
 | Level | Use for | Example |
 | --- | --- | --- |
-| ERROR | Something failed and needs attention | Payment processing failed, database connection lost |
-| WARN | Something unexpected that didn't cause failure | Retry succeeded on third attempt, deprecated API version used |
-| INFO | Normal operations worth recording | Request completed, user signed up, deployment finished |
-| DEBUG | Detailed info for active debugging | Cache hit/miss ratios, query plans, intermediate state |
+| `ERROR` | Something failed and needs attention | Payment processing failed, database connection lost |
+| `WARN` | Something unexpected that didn't cause failure | Retry succeeded on third attempt, deprecated API version used |
+| `INFO` | Normal operations worth recording | Request completed, user signed up, deployment finished |
+| `DEBUG` | Detailed info for active debugging | Cache hit/miss ratios, query plans, intermediate state |
 
 Two rules of thumb:
 
@@ -333,6 +326,8 @@ Drop rules run during ingestion, before logs are stored, so noisy or sensitive l
 Match rules by service name, severity, or any log attribute. Rules run top to bottom in ingestion order (after optional PII scrubbing and JSON parsing), so order them from most to least specific — drag the handle on each row to reorder.
 
 Because drop rules apply before storage, they're the fastest way to cut volume without shipping a code change. Pair them with the client-side practices above: sample at the source where you can, and use drop rules to catch the noise you can't.
+
+If you still want the trend from the lines you drop, add a [log-based metric](/docs/logs/metrics.md) first. Metric rules are evaluated before drop rules, so the count survives even though the logs don't.
 
 ## Add trace and session context
 

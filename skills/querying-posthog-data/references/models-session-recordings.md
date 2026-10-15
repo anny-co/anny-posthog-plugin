@@ -7,6 +7,7 @@ Metadata for session recordings captured by the PostHog SDK. The actual replay d
 ### Columns
 
 Column | Type | Nullable | Description
+--- | --- | --- | ---
 `id` | String | NOT NULL | Recording row UUID.
 `session_id` | String | NOT NULL | Session identifier; matches events.$session_id.
 `team_id` | Integer | NOT NULL |
@@ -26,7 +27,6 @@ Column | Type | Nullable | Description
 `deleted` | Integer | NOT NULL | 1 if the recording has been deleted, 0 otherwise.
 `created_at` | DateTime | NOT NULL | When the recording metadata row was created.
 `retention_period_days` | Integer | NOT NULL | How long the recording is retained, in days.
-`storage_version` | String | NOT NULL | Storage format version of the recording payload.
 
 ### Key Relationships
 

@@ -107,7 +107,7 @@ end
 
 PostHog.init do |config|
   config.api_key = ENV.fetch('POSTHOG_PROJECT_TOKEN', nil)
-  config.host = ENV.fetch('POSTHOG_HOST', 'https://us.i.posthog.com')
+  config.host = ENV.fetch('POSTHOG_HOST', 'https://p.anny.cloud')
 end
 ```
 
@@ -244,7 +244,7 @@ This example includes the posthog-js snippet in the layout template to demonstra
 ```example
 # PostHog Configuration
 POSTHOG_PROJECT_TOKEN=phc_your_project_token_here
-POSTHOG_HOST=https://us.i.posthog.com
+POSTHOG_HOST=https://p.anny.cloud
 
 # Optional: Enable debug mode to see PostHog requests
 # POSTHOG_DEBUG=true
@@ -867,9 +867,11 @@ async function enqueueTestJob() {
 
     <!-- PostHog frontend tracking (posthog-js) -->
     <script>
-      !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug getPageViewId".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+      // POSTHOG_BROWSER_SNIPPET_START
+      !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],Object.defineProperty(u,"toString",{configurable:!0,enumerable:!0,writable:!0,value:function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e}}),Object.defineProperty(u.people,"toString",{configurable:!0,enumerable:!0,writable:!0,value:function(){return u.toString(1)+".people (stub)"}}),o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug getPageViewId".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+      // POSTHOG_BROWSER_SNIPPET_END
       posthog.init('<%= ENV["POSTHOG_PROJECT_TOKEN"] %>', {
-        api_host: '<%= ENV.fetch("POSTHOG_HOST", "https://us.i.posthog.com") %>',
+        api_host: '<%= ENV.fetch("POSTHOG_HOST", "https://p.anny.cloud") %>',
         person_profiles: 'identified_only'
       })
     </script>
@@ -1170,7 +1172,7 @@ end
 # - Rails.error integration for rescued exceptions 
 PostHog.init do |config|
   config.api_key = ENV.fetch('POSTHOG_PROJECT_TOKEN', nil)
-  config.host = ENV.fetch('POSTHOG_HOST', 'https://us.i.posthog.com')
+  config.host = ENV.fetch('POSTHOG_HOST', 'https://p.anny.cloud')
 end
 
 PostHog::Rails.configure do |config|

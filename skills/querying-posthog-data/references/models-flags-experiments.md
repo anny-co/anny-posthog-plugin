@@ -9,6 +9,7 @@ Feature flags control rollouts of new features and are used for A/B testing.
 These are the only columns exposed via HogQL — the full flag model (e.g. `active`, `ensure_experience_continuity`, `last_called_at`, rollback settings) is not queryable here; fetch the flag via the feature flag API tools instead.
 
 Column | Type | Nullable | Description
+--- | --- | --- | ---
 `id` | Integer | NOT NULL | Flag id.
 `team_id` | Integer | NOT NULL |
 `key` | String | NOT NULL | Flag key used by SDKs to evaluate the flag.
@@ -66,6 +67,7 @@ Experiments are A/B tests that compare variants against a control group.
 These are the only columns exposed via HogQL — the full experiment model (e.g. `deleted`, `conclusion`, `metrics`, `metrics_secondary`, `stats_config`, `exposure_criteria`, `holdout_id`, `type`) is not queryable here; fetch the experiment via the experiment API tools instead.
 
 Column | Type | Nullable | Description
+--- | --- | --- | ---
 `id` | Integer | NOT NULL | Experiment id.
 `team_id` | Integer | NOT NULL |
 `name` | String | NOT NULL | Experiment name.
@@ -87,13 +89,12 @@ Column | Type | Nullable | Description
   "minimum_detectable_effect": 5,
   "recommended_running_time": 14,
   "recommended_sample_size": 1000,
-  "feature_flag_variants": [
-    {"key": "control", "name": "Control", "rollout_percentage": 50},
-    {"key": "test", "name": "Test", "rollout_percentage": 50}
-  ],
   "custom_exposure_filter": {...}
 }
 ```
+
+Variant keys and rollout percentages live on the linked flag. Read them from
+`filters.multivariate.variants` in `system.feature_flags`.
 
 ### Key Relationships
 

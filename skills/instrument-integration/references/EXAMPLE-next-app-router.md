@@ -36,7 +36,7 @@ Create a `.env.local` file in the root directory:
 
 ```bash
 NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN=your_posthog_project_token
-NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
+NEXT_PUBLIC_POSTHOG_HOST=https://p.anny.cloud
 ```
 
 Get your PostHog project token from your [PostHog project settings](https://posthog.anny.cloud/project/settings).
@@ -159,8 +159,8 @@ Check out the [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 # PostHog Configuration
 # Get your PostHog project token from: https://posthog.anny.cloud/project/settings
 NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN=your_posthog_project_token_here
-# NEXT_PUBLIC_POSTHOG_HOST=https://eu.i.posthog.com
-NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
+# NEXT_PUBLIC_POSTHOG_HOST=https://p.anny.cloud
+NEXT_PUBLIC_POSTHOG_HOST=https://p.anny.cloud
 ```
 
 ---
@@ -197,15 +197,15 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/ingest/static/:path*",
-        destination: "https://us-assets.i.posthog.com/static/:path*",
+        destination: "https://p.anny.cloud/static/:path*",
       },
       {
         source: "/ingest/array/:path*",
-        destination: "https://us-assets.i.posthog.com/array/:path*",
+        destination: "https://p.anny.cloud/array/:path*",
       },
       {
         source: "/ingest/:path*",
-        destination: "https://us.i.posthog.com/:path*",
+        destination: "https://p.anny.cloud/:path*",
       },
     ];
   },

@@ -110,7 +110,7 @@ Edit `.env` and add your PostHog project token:
 
 ```bash
 POSTHOG_PROJECT_TOKEN=phc_your_project_token_here
-POSTHOG_HOST=https://us.i.posthog.com
+POSTHOG_HOST=https://p.anny.cloud
 ```
 
 Get your PostHog project token from your [PostHog project settings](https://posthog.anny.cloud/project/settings).
@@ -213,7 +213,7 @@ const projectToken = Config.POSTHOG_PROJECT_TOKEN
 const isPostHogConfigured = projectToken && projectToken !== 'phc_your_project_token_here'
 
 export const posthog = new PostHog(projectToken || 'placeholder_key', {
-  host: Config.POSTHOG_HOST || 'https://us.i.posthog.com',
+  host: Config.POSTHOG_HOST || 'https://p.anny.cloud',
   disabled: !isPostHogConfigured,  // Disable if no project token
   captureAppLifecycleEvents: true,
   debug: __DEV__,
@@ -410,7 +410,7 @@ test('renders correctly', async () => {
 
 ```example
 POSTHOG_PROJECT_TOKEN=phc_your_project_token_here
-POSTHOG_HOST=https://us.i.posthog.com
+POSTHOG_HOST=https://p.anny.cloud
 
 ```
 
@@ -617,7 +617,7 @@ import Config from 'react-native-config'
 // Environment variables are embedded at build time via react-native-config
 // Ensure .env file exists with POSTHOG_PROJECT_TOKEN and POSTHOG_HOST
 const projectToken = Config.POSTHOG_PROJECT_TOKEN
-const host = Config.POSTHOG_HOST || 'https://us.i.posthog.com'
+const host = Config.POSTHOG_HOST || 'https://p.anny.cloud'
 const isPostHogConfigured = projectToken && projectToken !== 'phc_your_project_token_here'
 
 if (!isPostHogConfigured) {
@@ -637,7 +637,7 @@ if (!isPostHogConfigured) {
  * @see https://posthog.com/docs/libraries/react-native
  */
 export const posthog = new PostHog(projectToken || 'placeholder_key', {
-  // PostHog API host (usually 'https://us.i.posthog.com' or 'https://eu.i.posthog.com')
+  // PostHog API host (usually 'https://p.anny.cloud')
   host,
 
   // Enable PostHog only when a project token is configured

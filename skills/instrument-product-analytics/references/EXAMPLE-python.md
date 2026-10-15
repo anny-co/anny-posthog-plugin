@@ -48,7 +48,7 @@ cp .env.example .env
 
 # Edit .env and add your PostHog project token
 # POSTHOG_PROJECT_TOKEN=phc_your_project_token_here
-# POSTHOG_HOST=https://us.i.posthog.com
+# POSTHOG_HOST=https://p.anny.cloud
 ```
 
 ### 3. Run the App
@@ -102,7 +102,7 @@ from posthog import Posthog
 
 posthog = Posthog(
     api_key,
-    host='https://us.i.posthog.com',
+    host='https://p.anny.cloud',
     enable_exception_autocapture=True  # Automatically capture exceptions
 )
 ```
@@ -174,7 +174,7 @@ The app works fine without PostHog configured - it simply won't track analytics.
 ```example
 # PostHog Configuration
 POSTHOG_PROJECT_TOKEN=phc_your_project_token_here
-POSTHOG_HOST=https://us.i.posthog.com
+POSTHOG_HOST=https://p.anny.cloud
 
 # Optional: Enable debug mode to see PostHog requests
 # POSTHOG_DEBUG=true
@@ -234,7 +234,7 @@ def initialize_posthog():
     # Create PostHog instance with opinionated defaults
     posthog = Posthog(
         project_token,
-        host=os.getenv('POSTHOG_HOST', 'https://us.i.posthog.com'),
+        host=os.getenv('POSTHOG_HOST', 'https://p.anny.cloud'),
         debug=os.getenv('POSTHOG_DEBUG', 'False').lower() == 'true',
         enable_exception_autocapture=True  # Auto-capture unhandled exceptions
     )

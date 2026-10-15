@@ -1,10 +1,6 @@
 > AI agents: this is one page from PostHog's docs. Full index of Markdown docs for LLMs: https://posthog.com/llms.txt
 
-# API Feature Flags installation - Docs
-
-Copy page
-
-# API Feature Flags installation - Docs
+# API Feature Flags installation
 
 1.  1
 
@@ -13,8 +9,6 @@ Copy page
     Required
 
     `flags` is the endpoint used to determine if a given flag is enabled for a certain user or not.
-
-    PostHog AI
 
     ### Basic request (flags only)
 
@@ -25,7 +19,7 @@ Copy page
         "groups" : {
             "group_type": "group_id"
         }
-    }' "https://us.i.posthog.com/flags?v=2"
+    }' "https://p.anny.cloud/flags?v=2"
     ```
 
     ### Python
@@ -33,7 +27,8 @@ Copy page
     ```python
     import requests
     import json
-    url = "https://us.i.posthog.com/flags?v=2"
+    
+    url = "https://p.anny.cloud/flags?v=2"
     headers = {
         "Content-Type": "application/json"
     }
@@ -51,7 +46,7 @@ Copy page
     ### Node.js
 
     ```javascript
-    const response = await fetch("https://us.i.posthog.com/flags?v=2", {
+    const response = await fetch("https://p.anny.cloud/flags?v=2", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -80,8 +75,6 @@ Copy page
 
     **Note:** This step is only required for events captured using our server-side SDKs or API.
 
-    PostHog AI
-
     ### Terminal
 
     ```bash
@@ -92,7 +85,7 @@ Copy page
         "properties": {
             "$feature/feature-flag-key": "variant-key"
         }
-    }' https://us.i.posthog.com/i/v0/e/
+    }' https://p.anny.cloud/i/v0/e/
     ```
 
     ### Python
@@ -100,7 +93,8 @@ Copy page
     ```python
     import requests
     import json
-    url = "https://us.i.posthog.com/i/v0/e/"
+    
+    url = "https://p.anny.cloud/i/v0/e/"
     headers = {
         "Content-Type": "application/json"
     }
@@ -129,8 +123,6 @@ Copy page
     1.  `$feature_flag_response`: This is the name of the variant the user has been assigned to e.g., "control" or "test"
     2.  `$feature_flag`: This is the key of the feature flag in your experiment.
 
-    PostHog AI
-
     ### Terminal
 
     ```bash
@@ -142,7 +134,7 @@ Copy page
             "$feature_flag": "feature-flag-key",
             "$feature_flag_response": "variant-name"
         }
-    }' https://us.i.posthog.com/i/v0/e/
+    }' https://p.anny.cloud/i/v0/e/
     ```
 
     ### Python
@@ -150,7 +142,8 @@ Copy page
     ```python
     import requests
     import json
-    url = "https://us.i.posthog.com/i/v0/e/"
+    
+    url = "https://p.anny.cloud/i/v0/e/"
     headers = {
         "Content-Type": "application/json"
     }

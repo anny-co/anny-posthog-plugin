@@ -143,7 +143,7 @@ basics/fastapi/
 
 ```example
 POSTHOG_PROJECT_TOKEN=<ph_project_token>
-POSTHOG_HOST=https://us.i.posthog.com
+POSTHOG_HOST=https://p.anny.cloud
 SECRET_KEY=your-secret-key-here
 DEBUG=True
 POSTHOG_DISABLED=False
@@ -189,7 +189,7 @@ class Settings(BaseSettings):
 
     # PostHog
     posthog_project_token: str = "<ph_project_token>"
-    posthog_host: str = "https://us.i.posthog.com"
+    posthog_host: str = "https://p.anny.cloud"
     posthog_disabled: bool = False
 
 
