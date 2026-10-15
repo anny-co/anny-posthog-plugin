@@ -97,22 +97,47 @@ jqi .agents/plugins/marketplace.json \
 grep -rlE 'https://(us|eu|app)\.posthog\.com' skills commands agents 2>/dev/null \
     | sed_files "s#https://(us|eu|app)\.posthog\.com#${POSTHOG_URL}#g"
 
-# --- 4. LLM Analytics session capture ---------------------------------------
-# Opt-in hook, but its default host is PostHog Cloud. Anyone who flips
-# POSTHOG_LLMA_CC_ENABLED without also setting POSTHOG_HOST would ship their
-# Claude Code transcripts to the wrong company.
-grep -rlE 'https://(us|eu)\.i\.posthog\.com' telemetry hooks 2>/dev/null \
-    | sed_files "s#https://(us|eu)\.i\.posthog\.com#${POSTHOG_INGEST_URL}#g"
-
-# The setup command walks the reader through the same opt-in and tells them to
-# set POSTHOG_HOST to US or EU Cloud -- so following it to the letter still
-# ships transcripts to PostHog. There is one host here, not two regions: drop
-# the region choice first, then rewrite what is left.
+# --- 4. ingestion host -------------------------------------------------------
+# Every place that sends events -- the LLMA session hook, its setup command,
+# and the ~700 SDK snippets the instrument-* skills paste into an app -- names
+# PostHog Cloud. We have exactly one ingest host, so all of them go there.
+#
+# The LLMA setup command first: it offers a US/EU choice and calls US the
+# default. With one host there is no choice to offer, so drop that wording
+# before the blanket rewrite below turns it into "use p.anny.cloud for EU".
 printf '%s\n' commands/llma-cc-setup.md commands/llma-cc-setup.toml | sed_files "
     s#\\(default: \`https://us\\.i\\.posthog\\.com\`, use \`https://eu\\.i\\.posthog\\.com\` for EU\\)#(default: \`${POSTHOG_INGEST_URL}\`)#
     s#[[:space:]]*\\# for EU, omit for US##
     s#defaults to US#defaults to ${POSTHOG_INGEST_URL}#
-    s#https://(us|eu)\\.i\\.posthog\\.com#${POSTHOG_INGEST_URL}#g"
+    s#Help them choose US or EU hosting#Set \`POSTHOG_HOST\` to \`${POSTHOG_INGEST_URL}\`#"
+
+# us-assets.i.posthog.com is the static-asset half of the reverse-proxy
+# recipes; self-hosted serves both halves from the ingest host.
+grep -rlE 'https://(us|eu)(-assets)?\.i\.posthog\.com' telemetry hooks skills commands agents 2>/dev/null \
+    | sed_files "s#https://(us|eu)(-assets)?\.i\.posthog\.com#${POSTHOG_INGEST_URL}#g"
+
+# The rewrite leaves the region prose behind: "usually X or X", "use X for EU
+# region", an instruction to ask the user whether they are on US or EU Cloud.
+# With one host that is noise at best, and an agent following it asks a
+# question that has no answer. Collapse it to the one host. The SDK-default
+# claims are the dangerous part -- "host is optional" was true for PostHog
+# Cloud, but the SDKs' own default still IS PostHog Cloud, so leaving the host
+# out ships the app's events there.
+H_RE=$(printf '%s' "$POSTHOG_INGEST_URL" | sed 's/[.]/\\./g')
+REGION_PROSE=$(sed -e "s#@H@#${H_RE}#g" -e "s#@URL@#${POSTHOG_INGEST_URL}#g" <<'SED'
+s#`US` maps to `@H@`, `EU` maps to `@H@`\. If the region is not available from the MCP response or from existing project configuration, ask the user: "Are you on PostHog US Cloud or EU Cloud\?" Do not assume US Cloud\.#use `@URL@`.#g
+s#(['`])@H@(['`]) (by default )?or (['`])@H@(['`])#\1@URL@\2#g
+s#`@H@([^`]*)` \(US\) or `@H@[^`]*` \(EU\), matching the region determined above#`@URL@\1`#g
+s# for US-based projects and `@H@` for EU-based projects##g
+s#\. Set to `@H@` for EU Cloud##g
+s#[[:space:]]*// Optional: defaults to @H@\. Use @H@ for EU region##g
+s#If the host is not specified, the default host `@H@` is used\.#Always set the host to `@URL@` -- the SDK's own default is PostHog Cloud.#g
+s#Host is optional if you use `@H@`\.#Always set it -- the SDK's own default is PostHog Cloud.#g
+s#\*\*Default:\*\* `@H@`#**Default:** PostHog Cloud -- always set it#g
+s#For EU Cloud, set the host explicitly:#Set the host explicitly -- the chart defaults to PostHog Cloud:#g
+SED
+)
+grep -rlF "$POSTHOG_INGEST_URL" skills commands agents 2>/dev/null | sed_files "$REGION_PROSE"
 
 # --- assertions --------------------------------------------------------------
 [ "$(jq -r '.mcpServers.posthog.url' .mcp.json)" = "$MCP_URL" ] || fail ".mcp.json url not rewritten"
@@ -120,14 +145,15 @@ printf '%s\n' commands/llma-cc-setup.md commands/llma-cc-setup.toml | sed_files 
 [ "$(jq -r '.name' .claude-plugin/plugin.json)" = "$PLUGIN_NAME" ] || fail "plugin not renamed"
 [ "$(jq -r '.plugins[0].source.url' .agents/plugins/marketplace.json)" = "${REPO_URL}.git" ] \
     || fail "app marketplace still points upstream"
-if grep -rqE 'https://(us|eu)\.i\.posthog\.com' telemetry hooks --include='*.py' --include='*.sh' --include='*.json' 2>/dev/null; then
-    echo "apply-patches: LLMA hook code still defaults to PostHog Cloud:" >&2
-    grep -rlE 'https://(us|eu)\.i\.posthog\.com' telemetry hooks --include='*.py' --include='*.sh' --include='*.json' >&2
+CLOUD_HOSTS='https://((us|eu)(-assets)?\.i|us|eu|app)\.posthog\.com'
+if grep -rqE "$CLOUD_HOSTS" . --exclude-dir=.git --exclude-dir=.anny --exclude=README.md 2>/dev/null; then
+    echo "apply-patches: leftover PostHog Cloud hosts:" >&2
+    grep -rnE "$CLOUD_HOSTS" . --exclude-dir=.git --exclude-dir=.anny --exclude=README.md >&2
     exit 1
 fi
-if grep -qE 'i\.posthog\.com|for EU|defaults to US' commands/llma-cc-setup.md commands/llma-cc-setup.toml; then
-    echo "apply-patches: LLMA setup docs still point at PostHog Cloud:" >&2
-    grep -nE 'i\.posthog\.com|for EU|defaults to US' commands/llma-cc-setup.md commands/llma-cc-setup.toml >&2
+if grep -qE 'for EU|defaults to US|US or EU' commands/llma-cc-setup.md commands/llma-cc-setup.toml; then
+    echo "apply-patches: LLMA setup docs still offer a US/EU choice:" >&2
+    grep -nE 'for EU|defaults to US|US or EU' commands/llma-cc-setup.md commands/llma-cc-setup.toml >&2
     exit 1
 fi
 if grep -rqF 'mcp.posthog.com' . --exclude-dir=.git --exclude-dir=.anny --exclude='*.md' 2>/dev/null; then
