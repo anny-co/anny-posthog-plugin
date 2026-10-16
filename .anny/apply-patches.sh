@@ -93,7 +93,12 @@ jqi .claude-plugin/marketplace.json \
         | .homepage = $r
         | .author = { name: "anny", url: "https://anny.co" }
         | if .source == "./" then
-            .name = $n
+            # A repo-root source would make this plugin contain the telemetry
+            # plugin below it; the Claude app then lists only the telemetry
+            # one. Point at the repo as a URL instead, as the PostHog entry in
+            # claude-plugins-official and our .agents manifest do.
+            .source = { source: "url", url: "\($r).git" }
+            | .name = $n
             | .displayName = "PostHog (anny)"
             | .description = "PostHog on \($p) (anny self-hosted) -- analytics, feature flags, experiments, error tracking."
           else
