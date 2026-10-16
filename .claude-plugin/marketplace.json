@@ -32,10 +32,10 @@
       ]
     },
     {
-      "name": "posthog-anny",
-      "displayName": "PostHog (anny)",
+      "name": "posthog-telemetry-anny",
+      "displayName": "PostHog Telemetry (anny)",
       "source": "./telemetry",
-      "description": "PostHog on https://posthog.anny.cloud (anny self-hosted) -- analytics, feature flags, experiments, error tracking.",
+      "description": "Hooks only: sends Claude Code sessions to anny PostHog LLM analytics (https://p.anny.cloud). Install instead of PostHog (anny), not alongside it.",
       "version": "1.0.3",
       "author": {
         "name": "anny",
