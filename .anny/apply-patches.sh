@@ -33,7 +33,7 @@ sed_files() {
 }
 
 # --- anchors -----------------------------------------------------------------
-for f in .mcp.json mcp.json .claude-plugin/plugin.json \
+for f in .mcp.json mcp.json .claude-plugin/plugin.json telemetry/.claude-plugin/plugin.json \
          .claude-plugin/marketplace.json .agents/plugins/marketplace.json \
          commands/llma-cc-setup.md commands/llma-cc-setup.toml; do
     [ -f "$f" ] || fail "missing $f"
@@ -46,7 +46,11 @@ done
 assert .mcp.json                     '.mcpServers.posthog.url'
 assert mcp.json                      '.mcpServers.posthog.url'
 assert .claude-plugin/plugin.json    '.name == "posthog"'
-assert .claude-plugin/marketplace.json '.plugins[0].source == "./"'
+assert telemetry/.claude-plugin/plugin.json '.name == "posthog-telemetry"'
+# Every marketplace entry is renamed by its source below; an entry we do not
+# know would come through with upstream's name and author.
+assert .claude-plugin/marketplace.json \
+    '[.plugins[].source] | sort == ["./", "./telemetry"]'
 assert .agents/plugins/marketplace.json '.plugins[0].source.url'
 
 # --- 1. the MCP endpoint -----------------------------------------------------
@@ -68,18 +72,35 @@ jqi .claude-plugin/plugin.json \
     | .repository = $r
     | .homepage = $r'
 
+jqi telemetry/.claude-plugin/plugin.json \
+    --arg n "$TELEMETRY_PLUGIN_NAME" --arg r "$REPO_URL" --arg p "$POSTHOG_INGEST_URL" '
+    .name = $n
+    | .description = "Send Claude Code sessions to anny PostHog LLM analytics (\($p)). Hooks only: no skills, no commands, no MCP server. Install this instead of posthog-anny, not alongside it -- posthog-anny already ships the same hook."
+    | .repository = $r
+    | .homepage = $r'
+
+# Renamed per entry, keyed on the source: upstream lists two plugins, and a
+# blanket rename gives both the same name, which makes the whole marketplace
+# fail to load ("Failed to add marketplace").
 jqi .claude-plugin/marketplace.json \
-    --arg m "$MARKETPLACE_NAME" --arg n "$PLUGIN_NAME" --arg r "$REPO_URL" --arg p "$POSTHOG_URL" '
+    --arg m "$MARKETPLACE_NAME" --arg n "$PLUGIN_NAME" --arg t "$TELEMETRY_PLUGIN_NAME" \
+    --arg r "$REPO_URL" --arg p "$POSTHOG_URL" --arg i "$POSTHOG_INGEST_URL" '
     .name = $m
     | .owner = { name: "anny", url: "https://anny.co" }
     | .description = "anny plugins for Claude. PostHog wired to \($p)."
     | .plugins |= map(
-        .name = $n
-        | .displayName = "PostHog (anny)"
-        | .description = "PostHog on \($p) (anny self-hosted) -- analytics, feature flags, experiments, error tracking."
-        | .repository = $r
+        .repository = $r
         | .homepage = $r
-        | .author = { name: "anny", url: "https://anny.co" })'
+        | .author = { name: "anny", url: "https://anny.co" }
+        | if .source == "./" then
+            .name = $n
+            | .displayName = "PostHog (anny)"
+            | .description = "PostHog on \($p) (anny self-hosted) -- analytics, feature flags, experiments, error tracking."
+          else
+            .name = $t
+            | .displayName = "PostHog Telemetry (anny)"
+            | .description = "Hooks only: sends Claude Code sessions to anny PostHog LLM analytics (\($i)). Install instead of PostHog (anny), not alongside it."
+          end)'
 
 # The manifest the Claude app reads when a marketplace is added from a repo.
 # Upstream points it back at PostHog/ai-plugin -- left alone, the app would
@@ -143,6 +164,10 @@ grep -rlF "$POSTHOG_INGEST_URL" skills commands agents 2>/dev/null | sed_files "
 [ "$(jq -r '.mcpServers.posthog.url' .mcp.json)" = "$MCP_URL" ] || fail ".mcp.json url not rewritten"
 [ "$(jq -r '.mcpServers.posthog.url' mcp.json)" = "$MCP_URL" ] || fail "mcp.json url not rewritten"
 [ "$(jq -r '.name' .claude-plugin/plugin.json)" = "$PLUGIN_NAME" ] || fail "plugin not renamed"
+[ "$(jq -r '.name' telemetry/.claude-plugin/plugin.json)" = "$TELEMETRY_PLUGIN_NAME" ] \
+    || fail "telemetry plugin not renamed"
+jq -e '[.plugins[].name] | length == (unique | length)' .claude-plugin/marketplace.json >/dev/null \
+    || fail "duplicate plugin names in .claude-plugin/marketplace.json -- the marketplace would not load"
 [ "$(jq -r '.plugins[0].source.url' .agents/plugins/marketplace.json)" = "${REPO_URL}.git" ] \
     || fail "app marketplace still points upstream"
 CLOUD_HOSTS='https://((us|eu)(-assets)?\.i|us|eu|app)\.posthog\.com'
