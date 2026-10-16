@@ -9,10 +9,7 @@
     {
       "name": "posthog-anny",
       "displayName": "PostHog (anny)",
-      "source": {
-        "source": "url",
-        "url": "https://github.com/jeremy-anny/anny-posthog-plugin.git"
-      },
+      "source": "./",
       "description": "PostHog on https://posthog.anny.cloud (anny self-hosted) -- analytics, feature flags, experiments, error tracking.",
       "version": "1.1.67",
       "author": {
@@ -32,27 +29,6 @@
         "surveys",
         "dashboards",
         "llm-analytics"
-      ]
-    },
-    {
-      "name": "posthog-telemetry-anny",
-      "displayName": "PostHog Telemetry (anny)",
-      "source": "./telemetry",
-      "description": "Hooks only: sends Claude Code sessions to anny PostHog LLM analytics (https://p.anny.cloud). Install instead of PostHog (anny), not alongside it.",
-      "version": "1.0.3",
-      "author": {
-        "name": "anny",
-        "url": "https://anny.co"
-      },
-      "homepage": "https://github.com/jeremy-anny/anny-posthog-plugin",
-      "repository": "https://github.com/jeremy-anny/anny-posthog-plugin",
-      "license": "MIT",
-      "category": "productivity",
-      "keywords": [
-        "llm-analytics",
-        "ai-observability",
-        "claude-code",
-        "telemetry"
       ]
     }
   ]

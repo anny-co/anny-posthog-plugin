@@ -16,7 +16,7 @@ PLUGIN_ROOT_REF = re.compile(r"\$\{CLAUDE_PLUGIN_ROOT(?::-\$PLUGIN_ROOT)?\}(/[^\
 
 # Every directory Claude Code can install on its own, and so every root that
 # `${CLAUDE_PLUGIN_ROOT}` can expand to.
-PLUGIN_ROOTS = [("posthog", REPO_ROOT), ("posthog-telemetry", REPO_ROOT / "telemetry")]
+PLUGIN_ROOTS = [("posthog-anny", REPO_ROOT)]
 
 
 def _hook_commands(hooks_file):
