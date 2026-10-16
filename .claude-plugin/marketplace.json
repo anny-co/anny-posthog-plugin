@@ -9,7 +9,10 @@
     {
       "name": "posthog-anny",
       "displayName": "PostHog (anny)",
-      "source": "./",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/jeremy-anny/anny-posthog-plugin.git"
+      },
       "description": "PostHog on https://posthog.anny.cloud (anny self-hosted) -- analytics, feature flags, experiments, error tracking.",
       "version": "1.1.67",
       "author": {
