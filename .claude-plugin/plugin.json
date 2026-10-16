@@ -19,5 +19,7 @@
     "surveys",
     "dashboards",
     "llm-analytics"
-  ]
+  ],
+  "displayName": "PostHog (anny)",
+  "icon": "./assets/logo.png"
 }

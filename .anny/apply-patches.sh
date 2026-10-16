@@ -193,6 +193,15 @@ rm -rf .github
 mkdir -p .github/workflows
 cp .anny/workflows/mirror.yml .github/workflows/mirror.yml
 
+# Our mark: the anny butterfly resting on PostHog's hedgehog. Overwrites
+# upstream's assets/logo.svg, which the Cursor and Codex manifests already
+# point at; plugin.json gets it as `icon` (PNG, for the Claude listing).
+[ -f assets/logo.svg ] || fail "missing assets/logo.svg -- upstream moved its logo"
+cp .anny/assets/logo.svg .anny/assets/logo.png assets/
+jqi .claude-plugin/plugin.json '.displayName = "PostHog (anny)" | .icon = "./assets/logo.png"'
+jqi .cursor-plugin/plugin.json '.displayName = "PostHog (anny)"'
+jqi .codex-plugin/plugin.json '.interface.displayName = "PostHog (anny)" | .interface.developerName = "anny (PostHog mirror)"'
+
 # Upstream's README tells the reader to install `posthog@posthog` from
 # PostHog. Keep it for reference, lead with ours.
 [ -f README.md ] && mv README.md UPSTREAM_README.md

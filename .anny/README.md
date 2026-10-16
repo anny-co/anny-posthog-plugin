@@ -1,21 +1,50 @@
-# PostHog Plugin (anny)
+<p align="center">
+  <img src="assets/logo.png" width="128" height="128" alt="PostHog (anny): the anny butterfly resting on the PostHog hedgehog">
+</p>
 
-Spiegel von [`PostHog/ai-plugin`](https://github.com/PostHog/ai-plugin), umgebogen
-auf unser selbst gehostetes PostHog unter **https://posthog.anny.cloud**.
+<h1 align="center">PostHog (anny)</h1>
 
-Identisch zum offiziellen Plugin — ~160 Skills, Slash-Commands, `error-analyzer`,
-LLM-Analytics-Hook — nur zeigt der MCP-Connector auf `posthog.anny.cloud/mcp` statt auf
-`mcp.posthog.com`, und der Login läuft gegen unsere Instanz.
+<p align="center">
+  Das offizielle PostHog-Plugin für Claude, verbunden mit unserem selbst gehosteten PostHog unter
+  <a href="https://posthog.anny.cloud"><b>posthog.anny.cloud</b></a>.<br>
+  <sub>Spiegel von <a href="https://github.com/PostHog/ai-plugin"><code>PostHog/ai-plugin</code></a> · jede Nacht neu gebaut · MIT</sub>
+</p>
 
-Anmeldung passiert per **OAuth mit Dynamic Client Registration**: niemand trägt
-irgendwo einen API-Key ein. Beim ersten Tool-Aufruf registriert sich Claude
-selbst als OAuth-Client bei `posthog.anny.cloud`, der User klickt einmal
-„Authorize", fertig. Die Rechte sind danach die des PostHog-Accounts — wer dort
-kein Konto hat, kommt auch über das Plugin nicht rein.
+<p align="center">
+  <a href="#claude-app-web-desktop-chat-cowork">Claude App</a> ·
+  <a href="#claude-code">Claude Code</a> ·
+  <a href="#was-drin-ist">Was drin ist</a> ·
+  <a href="#für-betreiber">Für Betreiber</a>
+</p>
 
 ---
 
-## Für Nutzer: installieren
+## Was drin ist
+
+- **MCP analytics**: wie unsere MCP-Tools genutzt werden. `exploring-mcp-tool-usage`, `exploring-mcp-sessions`, `exploring-mcp-tool-quality`, `exploring-mcp-intent-clusters`, `signals-scout-mcp-tool-calls`
+- **Produkt-Analytics**: Insights, Trends, Funnels, HogQL (`querying-posthog-data`), Dashboards
+- **Flags & Experimente**: Feature Flags anlegen und aufräumen, Experimente aufsetzen und auswerten
+- **Error Tracking**: Issues untersuchen, Replays dazu finden, der `error-analyzer`-Agent
+- **LLM-Traces**: LLM Analytics, Kosten, Evaluations
+- **MCP-Connector**: `posthog.anny.cloud/mcp`, Login per OAuth mit deinem PostHog-Account
+
+~160 Skills, identisch zum offiziellen Plugin. Nur der MCP-Connector zeigt auf
+`posthog.anny.cloud/mcp` statt auf `mcp.posthog.com`, und der Login läuft gegen
+unsere Instanz.
+
+**Kein API-Key nötig.** Beim ersten Tool-Aufruf registriert sich Claude selbst
+als OAuth-Client bei `posthog.anny.cloud` (Dynamic Client Registration), du
+klickst einmal „Authorize", fertig. Die Rechte sind die deines PostHog-Accounts.
+Wer dort kein Konto hat, kommt auch über das Plugin nicht rein.
+
+**Keine Sessions an PostHog, außer du willst es.** Das Plugin hat einen Hook,
+der Claude-Code-Sessions in LLM Analytics hochladen *kann*. Er tut nichts,
+solange du nicht selbst `POSTHOG_LLMA_CC_ENABLED=true` **und** `POSTHOG_API_KEY`
+setzt ([unten](#optional-eigene-claude-code-sessions-in-llm-analytics)).
+
+---
+
+## Installieren
 
 ### Claude App (Web, Desktop-Chat, Cowork)
 
@@ -23,12 +52,10 @@ kein Konto hat, kommt auch über das Plugin nicht rein.
 2. Unter **Personal plugins** auf **+** → **Add marketplace**
 3. `jeremy-anny/anny-posthog-plugin` eintragen → **Sync**
 4. **Browse** → **PostHog (anny)** → **Install**
-5. Beim ersten PostHog-Befehl öffnet sich der Login auf `posthog.anny.cloud` →
-   **Authorize**
+5. Beim ersten PostHog-Befehl öffnet sich der Login auf `posthog.anny.cloud` → **Authorize**
 
-Hooks und Sub-Agents (`error-analyzer`, das Session-Capture) laufen nur in
-Cowork — in der normalen Chat-Ansicht sind sie ausgegraut. Skills und der
-MCP-Connector funktionieren überall.
+> Hooks und Sub-Agents (`error-analyzer`) laufen nur in Cowork, in der normalen
+> Chat-Ansicht sind sie ausgegraut. Skills und der MCP-Connector funktionieren überall.
 
 ### Claude Code
 
@@ -37,8 +64,9 @@ claude plugin marketplace add jeremy-anny/anny-posthog-plugin
 claude plugin install posthog-anny@anny
 ```
 
-Dann in einer Session `/mcp`, `plugin:posthog-anny:posthog` auswählen, Enter —
-der Browser öffnet den OAuth-Flow.
+Dann in einer Session `/mcp` → `plugin:posthog-anny:posthog` → Enter, der
+Browser öffnet den OAuth-Flow. Im anny-Agent-Kit (GitLab) ist das Plugin als
+`posthog-anny@anny` ebenfalls gelistet.
 
 Der Name ist bewusst `posthog-anny`: wer zusätzlich das offizielle
 `posthog@claude-plugins-official` installiert hat, behält beides parallel,
@@ -47,11 +75,11 @@ auf zwei verschiedene Instanzen gezeigt.
 ### Cursor / Codex / Gemini CLI
 
 `.cursor-plugin/`, `.codex-plugin/` und `gemini-extension.json` sind
-mitgespiegelt und zeigen ebenfalls auf `mcp.anny.cloud`.
+mitgespiegelt und zeigen ebenfalls auf `posthog.anny.cloud/mcp`.
 
-### Optional: Claude-Code-Sessions in LLM Analytics
+### Optional: eigene Claude-Code-Sessions in LLM Analytics
 
-In `~/.claude/settings.json`:
+Aus, bis du es einschaltest. In deiner `~/.claude/settings.json`:
 
 ```json
 {
@@ -63,12 +91,17 @@ In `~/.claude/settings.json`:
 }
 ```
 
-Der `POSTHOG_HOST`-Default ist im Spiegel schon auf `p.anny.cloud` gepatcht —
-er steht hier nur der Klarheit halber.
+Am Ende jeder Session gehen dann deine Transkripte als LLM-Traces an unser
+PostHog. Der `POSTHOG_HOST`-Default ist schon auf `p.anny.cloud` gepatcht und
+steht hier nur der Klarheit halber.
 
 ---
 
-## Für Betreiber: was vorher stehen muss
+<a id="für-betreiber"></a>
+## Für Betreiber
+
+<details>
+<summary><b>Was vorher stehen muss</b></summary>
 
 Das Plugin ist nur ein Zeiger. Der MCP-Server selbst kommt aus dem
 `gitops-services`-Repo: `charts/posthog/templates/mcp.yaml` rendert Secret,
@@ -213,7 +246,10 @@ Registrierung durchgeht, zeigt erst:
 Das legt einen echten OAuth-Client an und gibt die `client_id` aus (danach unter
 *Settings → Connected apps* löschen).
 
-## Wie der Login abläuft
+</details>
+
+<details>
+<summary><b>Wie der Login abläuft</b></summary>
 
 ```
 Claude ──POST /mcp──────────────────────► posthog.anny.cloud/mcp
@@ -241,9 +277,10 @@ stehen unter *Settings → Connected apps*; entziehen geht dort einzeln.
 Organisationsweit read-only lässt sich das Ganze unter
 *Organization settings → Security → „Restrict MCP access to read-only"* stellen.
 
----
+</details>
 
-## Repo-Sichtbarkeit
+<details>
+<summary><b>Repo-Sichtbarkeit</b></summary>
 
 Die beiden Verteilwege haben **gegensätzliche** Anforderungen:
 
@@ -261,9 +298,10 @@ zeigt, scheitert im persönlichen Weg mit einem nichtssagenden
 Geheim ist hier nichts: ein MIT-Fork plus eine URL, die durch OAuth geschützt
 ist und deren OAuth-Metadaten ohnehin öffentlich sind.
 
----
+</details>
 
-## Wie der Spiegel funktioniert
+<details>
+<summary><b>Wie der Spiegel funktioniert</b></summary>
 
 Kein Fork-und-Merge. Bei jedem Sync wird der Baum **weggeworfen und aus
 Upstream neu aufgebaut**, danach werden die Patches erneut angewendet. Damit
@@ -277,6 +315,7 @@ schlägt fehl und nennt den Anker, der sich bewegt hat.
   apply-patches.sh   ← die Patches, mit Anker-Assertions
   check-oauth.sh     ← Preflight für MCP + DCR
   workflows/         ← kanonische Kopie des Workflows
+  assets/            ← unser Logo (SVG + PNG)
   UPSTREAM_SHA       ← woraus der aktuelle Stand gebaut ist
 ```
 
@@ -301,8 +340,10 @@ git commit -am "config: …"
 | Datei | Änderung |
 |---|---|
 | `.mcp.json`, `mcp.json`, `gemini-extension.json` | MCP-Endpoint → `posthog.anny.cloud/mcp` |
-| `.claude-plugin/plugin.json` | Name → `posthog-anny` |
-| `.claude-plugin/marketplace.json` | Marketplace → `anny`, Plugin-Eintrag |
+| `.claude-plugin/plugin.json` | Name → `posthog-anny`, `displayName`, `icon` |
+| `.claude-plugin/marketplace.json` | Marketplace → `anny`, nur der Eintrag `posthog-anny` |
+| `telemetry/.claude-plugin/` | gelöscht: die Claude App überspringt ein Plugin, das ein zweites `plugin.json` enthält. Die Hook-Dateien bleiben, `posthog-anny` nutzt sie |
+| `assets/logo.svg`, `assets/logo.png` | unser Logo aus `.anny/assets/` (anny-Schmetterling auf dem PostHog-Igel) |
 | `.agents/plugins/marketplace.json` | Quelle → dieses Repo. **Ohne das würde die Claude App aus unserem Marketplace das offizielle Plugin installieren** — mit Cloud-Endpoint. |
 | `skills/`, `commands/`, `agents/` | ~250 Deeplinks `us/eu/app.posthog.com` → `posthog.anny.cloud` |
 | `telemetry/`, `hooks/`, `skills/`, `commands/`, `agents/` | Ingest-Hosts `us/eu(-assets).i.posthog.com` → `p.anny.cloud` (LLMA-Hook-Default, LLMA-Setup, ~700 SDK-Snippets) |
@@ -311,6 +352,8 @@ git commit -am "config: …"
 | `README.md` | dieses hier; Upstreams liegt als `UPSTREAM_README.md` daneben |
 
 Der Patch-Lauf bricht ab, wenn irgendwo noch `mcp.posthog.com` steht.
+
+</details>
 
 ---
 
