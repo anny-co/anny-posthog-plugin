@@ -72,40 +72,31 @@ jqi .claude-plugin/plugin.json \
     | .repository = $r
     | .homepage = $r'
 
-jqi telemetry/.claude-plugin/plugin.json \
-    --arg n "$TELEMETRY_PLUGIN_NAME" --arg r "$REPO_URL" --arg p "$POSTHOG_INGEST_URL" '
-    .name = $n
-    | .description = "Send Claude Code sessions to anny PostHog LLM analytics (\($p)). Hooks only: no skills, no commands, no MCP server. Install this instead of posthog-anny, not alongside it -- posthog-anny already ships the same hook."
-    | .repository = $r
-    | .homepage = $r'
+# Upstream also ships telemetry/ as a separate hooks-only plugin. The Claude
+# app rejects a plugin that contains another plugin.json ("found nested:
+# 'telemetry/.claude-plugin/plugin.json'") and skips posthog-anny, whatever
+# its source type. Nobody here needs the hooks-only variant -- posthog-anny
+# runs the same hook from telemetry/hooks/ -- so drop its manifest and its
+# marketplace entry and keep the files the main plugin's hook uses.
+rm -rf telemetry/.claude-plugin
+grep -qF '("posthog-telemetry", REPO_ROOT / "telemetry")' tests/test_plugin_paths.py \
+    || fail "anchor gone in tests/test_plugin_paths.py -- upstream restructured"
+printf '%s\n' tests/test_plugin_paths.py | sed_files "
+    s#, \\(\"posthog-telemetry\", REPO_ROOT / \"telemetry\"\\)##
+    s#\\(\"posthog\", REPO_ROOT\\)#(\"${PLUGIN_NAME}\", REPO_ROOT)#"
 
-# Renamed per entry, keyed on the source: upstream lists two plugins, and a
-# blanket rename gives both the same name, which makes the whole marketplace
-# fail to load ("Failed to add marketplace").
 jqi .claude-plugin/marketplace.json \
-    --arg m "$MARKETPLACE_NAME" --arg n "$PLUGIN_NAME" --arg t "$TELEMETRY_PLUGIN_NAME" \
-    --arg r "$REPO_URL" --arg p "$POSTHOG_URL" --arg i "$POSTHOG_INGEST_URL" '
+    --arg m "$MARKETPLACE_NAME" --arg n "$PLUGIN_NAME" --arg r "$REPO_URL" --arg p "$POSTHOG_URL" '
     .name = $m
     | .owner = { name: "anny", url: "https://anny.co" }
     | .description = "anny plugins for Claude. PostHog wired to \($p)."
-    | .plugins |= map(
-        .repository = $r
+    | .plugins |= map(select(.source == "./")
+        | .name = $n
+        | .displayName = "PostHog (anny)"
+        | .description = "PostHog on \($p) (anny self-hosted) -- analytics, feature flags, experiments, error tracking."
+        | .repository = $r
         | .homepage = $r
-        | .author = { name: "anny", url: "https://anny.co" }
-        | if .source == "./" then
-            # A repo-root source would make this plugin contain the telemetry
-            # plugin below it; the Claude app then lists only the telemetry
-            # one. Point at the repo as a URL instead, as the PostHog entry in
-            # claude-plugins-official and our .agents manifest do.
-            .source = { source: "url", url: "\($r).git" }
-            | .name = $n
-            | .displayName = "PostHog (anny)"
-            | .description = "PostHog on \($p) (anny self-hosted) -- analytics, feature flags, experiments, error tracking."
-          else
-            .name = $t
-            | .displayName = "PostHog Telemetry (anny)"
-            | .description = "Hooks only: sends Claude Code sessions to anny PostHog LLM analytics (\($i)). Install instead of PostHog (anny), not alongside it."
-          end)'
+        | .author = { name: "anny", url: "https://anny.co" })'
 
 # The manifest the Claude app reads when a marketplace is added from a repo.
 # Upstream points it back at PostHog/ai-plugin -- left alone, the app would
@@ -169,8 +160,9 @@ grep -rlF "$POSTHOG_INGEST_URL" skills commands agents 2>/dev/null | sed_files "
 [ "$(jq -r '.mcpServers.posthog.url' .mcp.json)" = "$MCP_URL" ] || fail ".mcp.json url not rewritten"
 [ "$(jq -r '.mcpServers.posthog.url' mcp.json)" = "$MCP_URL" ] || fail "mcp.json url not rewritten"
 [ "$(jq -r '.name' .claude-plugin/plugin.json)" = "$PLUGIN_NAME" ] || fail "plugin not renamed"
-[ "$(jq -r '.name' telemetry/.claude-plugin/plugin.json)" = "$TELEMETRY_PLUGIN_NAME" ] \
-    || fail "telemetry plugin not renamed"
+[ "$(jq '.plugins | length' .claude-plugin/marketplace.json)" = 1 ] || fail "marketplace should list posthog-anny only"
+NESTED=$(find . -path ./.git -prune -o -path ./.claude-plugin -prune -o -name plugin.json -path '*/.claude-plugin/*' -print)
+[ -z "$NESTED" ] || fail "nested plugin manifest, the Claude app would skip posthog-anny: $NESTED"
 jq -e '[.plugins[].name] | length == (unique | length)' .claude-plugin/marketplace.json >/dev/null \
     || fail "duplicate plugin names in .claude-plugin/marketplace.json -- the marketplace would not load"
 [ "$(jq -r '.plugins[0].source.url' .agents/plugins/marketplace.json)" = "${REPO_URL}.git" ] \
