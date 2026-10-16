@@ -24,10 +24,10 @@
   "mcpServers": "./.mcp.json",
   "hooks": "./hooks/codex-hooks.json",
   "interface": {
-    "displayName": "PostHog",
+    "displayName": "PostHog (anny)",
     "shortDescription": "Analytics, feature flags, experiments, and error tracking",
     "longDescription": "Access PostHog analytics, feature flags, experiments, error tracking, and insights directly from Codex. Query your data, manage flags, run A/B tests, and debug errors without leaving your editor.",
-    "developerName": "PostHog",
+    "developerName": "anny (PostHog mirror)",
     "category": "Productivity",
     "capabilities": [
       "Read",
