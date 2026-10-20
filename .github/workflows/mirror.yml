@@ -21,6 +21,11 @@ jobs:
       - name: Rebuild from upstream
         run: .anny/sync-upstream.sh
 
+      # Here and not only in check.yml: a PR opened with the workflow's own
+      # token triggers no other workflow, so check.yml never sees a sync PR.
+      - name: Codex installs the plugin
+        run: .anny/check-codex.sh
+
       - id: upstream
         run: echo "sha=$(cat .anny/UPSTREAM_SHA)" >> "$GITHUB_OUTPUT"
 

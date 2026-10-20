@@ -50,7 +50,7 @@ setzt ([unten](#optional-eigene-claude-code-sessions-in-llm-analytics)).
 
 1. **Customize** in der linken Sidebar → Tab **Plugins**
 2. Unter **Personal plugins** auf **+** → **Add marketplace**
-3. `jeremy-anny/anny-posthog-plugin` eintragen → **Sync**
+3. `anny-co/anny-posthog-plugin` eintragen → **Sync**
 4. **Browse** → **PostHog (anny)** → **Install**
 5. Beim ersten PostHog-Befehl öffnet sich der Login auf `posthog.anny.cloud` → **Authorize**
 
@@ -60,7 +60,7 @@ setzt ([unten](#optional-eigene-claude-code-sessions-in-llm-analytics)).
 ### Claude Code
 
 ```bash
-claude plugin marketplace add jeremy-anny/anny-posthog-plugin
+claude plugin marketplace add anny-co/anny-posthog-plugin
 claude plugin install posthog-anny@anny
 ```
 
@@ -72,10 +72,21 @@ Der Name ist bewusst `posthog-anny`: wer zusätzlich das offizielle
 `posthog@claude-plugins-official` installiert hat, behält beides parallel,
 auf zwei verschiedene Instanzen gezeigt.
 
-### Cursor / Codex / Gemini CLI
+### Codex
 
-`.cursor-plugin/`, `.codex-plugin/` und `gemini-extension.json` sind
-mitgespiegelt und zeigen ebenfalls auf `posthog.anny.cloud/mcp`.
+```bash
+codex plugin marketplace add anny-co/anny-posthog-plugin
+codex plugin add posthog-anny@anny
+codex mcp login posthog
+```
+
+Der letzte Befehl öffnet den OAuth-Flow im Browser. Jeder Sync prüft mit
+`.anny/check-codex.sh`, dass Codex das Plugin installiert.
+
+### Cursor / Gemini CLI
+
+`.cursor-plugin/` und `gemini-extension.json` sind mitgespiegelt und zeigen
+ebenfalls auf `posthog.anny.cloud/mcp`.
 
 ### Optional: eigene Claude-Code-Sessions in LLM Analytics
 
@@ -314,7 +325,8 @@ schlägt fehl und nennt den Anker, der sich bewegt hat.
   sync-upstream.sh   ← Baum neu bauen (lokal oder in CI)
   apply-patches.sh   ← die Patches, mit Anker-Assertions
   check-oauth.sh     ← Preflight für MCP + DCR
-  workflows/         ← kanonische Kopie des Workflows
+  check-codex.sh     ← installiert das Plugin in einem Wegwerf-Codex (CI, jeder Sync)
+  workflows/         ← kanonische Kopie der Workflows
   assets/            ← unser Logo (SVG + PNG)
   UPSTREAM_SHA       ← woraus der aktuelle Stand gebaut ist
 ```
@@ -345,10 +357,11 @@ git commit -am "config: …"
 | `telemetry/.claude-plugin/` | gelöscht: die Claude App überspringt ein Plugin, das ein zweites `plugin.json` enthält. Die Hook-Dateien bleiben, `posthog-anny` nutzt sie |
 | `assets/logo.svg`, `assets/logo.png` | unser Logo aus `.anny/assets/` (anny-Schmetterling auf dem PostHog-Igel) |
 | `.agents/plugins/marketplace.json` | Quelle → dieses Repo. **Ohne das würde die Claude App aus unserem Marketplace das offizielle Plugin installieren** — mit Cloud-Endpoint. |
+| `.codex-plugin/plugin.json` | Name → `posthog-anny`, `displayName`. Codex verweigert die Installation, wenn der Name vom Marketplace-Eintrag abweicht |
 | `skills/`, `commands/`, `agents/` | ~250 Deeplinks `us/eu/app.posthog.com` → `posthog.anny.cloud` |
 | `telemetry/`, `hooks/`, `skills/`, `commands/`, `agents/` | Ingest-Hosts `us/eu(-assets).i.posthog.com` → `p.anny.cloud` (LLMA-Hook-Default, LLMA-Setup, ~700 SDK-Snippets) |
 | dieselben | US/EU-Regionswahl raus; Aussagen „Host optional / Default“ ersetzt — der SDK-eigene Default ist PostHog Cloud |
-| `.github/` | Upstream-CI raus, unser Workflow rein |
+| `.github/` | Upstream-CI raus, unsere Workflows rein |
 | `README.md` | dieses hier; Upstreams liegt als `UPSTREAM_README.md` daneben |
 
 Der Patch-Lauf bricht ab, wenn irgendwo noch `mcp.posthog.com` steht.

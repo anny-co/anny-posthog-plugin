@@ -195,11 +195,11 @@ fi
 # --- 5. our own files --------------------------------------------------------
 # Upstream's CI has no business running in a mirror (it releases to PostHog's
 # marketplace and syncs skills from their monorepo). Drop it, then lay our
-# workflow back down -- .anny/ is the canonical copy, this is just the copy
+# workflows back down -- .anny/ is the canonical copy, this is just the copy
 # GitHub actually reads.
 rm -rf .github
 mkdir -p .github/workflows
-cp .anny/workflows/mirror.yml .github/workflows/mirror.yml
+cp .anny/workflows/*.yml .github/workflows/
 
 # Our mark: the anny butterfly resting on PostHog's hedgehog. Overwrites
 # upstream's assets/logo.svg, which the Cursor and Codex manifests already

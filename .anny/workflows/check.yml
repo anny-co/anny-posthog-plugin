@@ -1,0 +1,21 @@
+# Canonical copy lives at .anny/workflows/check.yml; apply-patches.sh copies it
+# here on every sync. Edit the copy under .anny/, never this one -- the next
+# sync overwrites it.
+name: Check plugin
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  codex:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Codex installs the plugin
+        run: .anny/check-codex.sh

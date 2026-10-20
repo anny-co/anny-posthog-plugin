@@ -7,8 +7,8 @@
     "email": "hey@posthog.com",
     "url": "https://posthog.com"
   },
-  "homepage": "https://github.com/jeremy-anny/anny-posthog-plugin",
-  "repository": "https://github.com/jeremy-anny/anny-posthog-plugin",
+  "homepage": "https://github.com/anny-co/anny-posthog-plugin",
+  "repository": "https://github.com/anny-co/anny-posthog-plugin",
   "license": "MIT",
   "keywords": [
     "analytics",
