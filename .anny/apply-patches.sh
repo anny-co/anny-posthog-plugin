@@ -34,7 +34,7 @@ sed_files() {
 
 # --- anchors -----------------------------------------------------------------
 for f in .mcp.json mcp.json .claude-plugin/plugin.json telemetry/.claude-plugin/plugin.json \
-         .claude-plugin/marketplace.json .agents/plugins/marketplace.json \
+         .claude-plugin/marketplace.json .agents/plugins/marketplace.json .codex-plugin/plugin.json \
          commands/llma-cc-setup.md commands/llma-cc-setup.toml; do
     [ -f "$f" ] || fail "missing $f"
 done
@@ -46,6 +46,7 @@ done
 assert .mcp.json                     '.mcpServers.posthog.url'
 assert mcp.json                      '.mcpServers.posthog.url'
 assert .claude-plugin/plugin.json    '.name == "posthog"'
+assert .codex-plugin/plugin.json     '.name == "posthog"'
 assert telemetry/.claude-plugin/plugin.json '.name == "posthog-telemetry"'
 # Every marketplace entry is renamed by its source below; an entry we do not
 # know would come through with upstream's name and author.
@@ -107,6 +108,11 @@ jqi .agents/plugins/marketplace.json \
     | .interface.displayName = "PostHog (anny)"
     | .plugins |= map(.name = $n | .source.url = $r)'
 
+# Codex installs from that same marketplace and refuses a plugin whose
+# manifest name differs from its entry ("plugin.json name `posthog` does not
+# match marketplace plugin name `posthog-anny`"), so its manifest follows suit.
+jqi .codex-plugin/plugin.json --arg n "$PLUGIN_NAME" '.name = $n'
+
 # --- 3. deep links in the skills --------------------------------------------
 # ~250 "open this in PostHog" links across the skills point at the hosted app.
 # Left alone every one of them sends a reader to an instance they have no
@@ -167,6 +173,8 @@ jq -e '[.plugins[].name] | length == (unique | length)' .claude-plugin/marketpla
     || fail "duplicate plugin names in .claude-plugin/marketplace.json -- the marketplace would not load"
 [ "$(jq -r '.plugins[0].source.url' .agents/plugins/marketplace.json)" = "${REPO_URL}.git" ] \
     || fail "app marketplace still points upstream"
+[ "$(jq -r '.name' .codex-plugin/plugin.json)" = "$(jq -r '.plugins[0].name' .agents/plugins/marketplace.json)" ] \
+    || fail "Codex manifest name differs from its marketplace entry -- Codex would refuse to install it"
 CLOUD_HOSTS='https://((us|eu)(-assets)?\.i|us|eu|app)\.posthog\.com'
 if grep -rqE "$CLOUD_HOSTS" . --exclude-dir=.git --exclude-dir=.anny --exclude=README.md 2>/dev/null; then
     echo "apply-patches: leftover PostHog Cloud hosts:" >&2
