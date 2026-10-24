@@ -2,6 +2,16 @@
 
 # AI Observability basics
 
+Canonical URL: https://posthog.com/docs/ai-observability/basics
+
+## On this page
+
+- [How LLM calls become events](#how-llm-calls-become-events)
+- [The $ai_ prefix](#the-ai_-prefix)
+- [Generation properties](#generation-properties)
+- [Grouping related events](#grouping-related-events)
+- [See it in action](#see-it-in-action)
+
 This page covers how your LLM calls become analytics in PostHog and defines key concepts for AI Observability.
 
 ## How LLM calls become events
@@ -14,6 +24,18 @@ Events sent to PostHog are called **generations**. A generation represents a sin
 
 Generations are represented using the event name `$ai_generation`. Each generation captures the model, provider, input, output, token counts, latency, and cost.
 
+## The `$ai_` prefix
+
+Every event name that starts with `$ai_` is an AI Observability event. This includes the names the SDKs send, like `$ai_generation`, `$ai_span`, `$ai_trace`, and `$ai_embedding`, and any other `$ai_` name you send yourself.
+
+PostHog processes every `$ai_` event as an AI Observability event rather than a Product Analytics event:
+
+-   It doesn't create or update a person profile. `$set` and `$set_once` on the event are ignored.
+-   The full event, including large properties like `$ai_input` and `$ai_output`, is kept for 30 days. After that, only a copy without those properties remains. See [data retention](https://posthog.com/docs/ai-observability/data-retention.md).
+-   It's billed as an AI Observability event, not as a Product Analytics event.
+
+Don't use the `$ai_` prefix for events that need person profiles or Product Analytics pricing.
+
 ## Generation properties
 
 ### Tokens and costs
@@ -25,7 +47,7 @@ Generations are represented using the event name `$ai_generation`. Each generati
 
 PostHog automatically calculates costs by matching your model and provider against pricing data. We use OpenRouter's pricing as our primary source, with fallback to manually maintained pricing for additional models.
 
-You can also [set custom pricing](/docs/ai-observability/calculating-costs.md) if you have negotiated rates or use unsupported models.
+You can also [set custom pricing](https://posthog.com/docs/ai-observability/calculating-costs.md) if you have negotiated rates or use unsupported models.
 
 ### Message roles
 
@@ -49,26 +71,18 @@ Here's a breakdown of this hierarchy:
 
 | Term | Definition | Example |
 | --- | --- | --- |
-| [Session](/docs/ai-observability/sessions.md) | Groups multiple traces together | A user's conversation thread |
-| [Trace](/docs/ai-observability/traces.md) | Contains generations and spans for a single request | One chatbot message and response |
-| [Span](/docs/ai-observability/spans.md) | Tracks an operation within a trace | A retrieval step or function call |
-| [Generation](/docs/ai-observability/generations.md) | An LLM call, tracked as `$ai_generation` events | Sending a prompt to Claude |
-| [Embedding](/docs/ai-observability/embeddings.md) | Converts text into vectors | Vectorizing documents for RAG |
+| [Session](https://posthog.com/docs/ai-observability/sessions.md) | Groups multiple traces together | A user's conversation thread |
+| [Trace](https://posthog.com/docs/ai-observability/traces.md) | Contains generations and spans for a single request | One chatbot message and response |
+| [Span](https://posthog.com/docs/ai-observability/spans.md) | Tracks an operation within a trace | A retrieval step or function call |
+| [Generation](https://posthog.com/docs/ai-observability/generations.md) | An LLM call, tracked as `$ai_generation` events | Sending a prompt to Claude |
+| [Embedding](https://posthog.com/docs/ai-observability/embeddings.md) | Converts text into vectors | Vectorizing documents for RAG |
 
 **A session here usually means a conversation**
 
-In AI Observability, a session (`$ai_session_id`) typically represents a single **conversation** – one thread of back-and-forth turns with your assistant. This is different from a standard PostHog [session](/docs/data/sessions.md) (`$session_id`), like the ones you see in [Session replay](/docs/session-replay.md), which represents one continuous visit to your app.
+In AI Observability, a session (`$ai_session_id`) typically represents a single **conversation** – one thread of back-and-forth turns with your assistant. This is different from a standard PostHog [session](https://posthog.com/docs/data/sessions.md) (`$session_id`), like the ones you see in [Session replay](https://posthog.com/docs/session-replay.md), which represents one continuous visit to your app.
 
-A single PostHog session can contain multiple AI Observability sessions: a user might start several separate conversations during one visit. See [sessions](/docs/ai-observability/sessions.md#note-on-posthog-session-ids) for more on the distinction.
+A single PostHog session can contain multiple AI Observability sessions: a user might start several separate conversations during one visit. See [sessions](https://posthog.com/docs/ai-observability/sessions.md#note-on-posthog-session-ids) for more on the distinction.
 
 ## See it in action
 
-Want to see these concepts applied in real projects? Check out our [demos and example projects](/docs/ai-observability/demos.md) or [browse AI Observability side projects](/side-projects?tag=ai-observability.md) built by the PostHog team.
-
-### Still have questions?
-
-Ask PostHog AI
-
-### Was this page useful?
-
-HelpfulCould be better
+Want to see these concepts applied in real projects? Check out our [demos and example projects](https://posthog.com/docs/ai-observability/demos.md) or [browse AI Observability side projects](https://posthog.com/side-projects?tag=ai-observability.md) built by the PostHog team.
