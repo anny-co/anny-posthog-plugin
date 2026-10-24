@@ -2,6 +2,19 @@
 
 # Ruby Error Tracking installation
 
+Canonical URL: https://posthog.com/docs/error-tracking/installation/ruby
+
+> **Cloud region:** This page uses US Cloud hosts. For an EU Cloud project, use `https://p.anny.cloud` instead of `https://p.anny.cloud` (ingestion host), and use `https://posthog.anny.cloud` instead of `https://posthog.anny.cloud` (app host for links).
+
+## On this page
+
+- [Install the gem](#install-the-gem)
+- [Configure PostHog](#configure-posthog)
+- [Send events](#send-events)
+- [Manually capture exceptions](#manually-capture-exceptions)
+- [Verify error tracking](#verify-error-tracking)
+- [Link releases](#link-releases)
+
 1.  1
 
     ## Install the gem
@@ -103,10 +116,14 @@
 
     [Check for exceptions in PostHog](https://posthog.anny.cloud/activity/explore)
 
-### Still have questions?
+6.  5
 
-Ask PostHog AI
+    ## Link releases
 
-### Was this page useful?
+    Optional
 
-HelpfulCould be better
+    Great, you're capturing exceptions! To see which release each exception comes from, give your app the release ID when you deploy.
+
+    Let's continue to the next section.
+
+    [Link releases](https://posthog.com/docs/error-tracking/link-releases/ruby.md)
