@@ -2,6 +2,20 @@
 
 # Node.js Error Tracking installation
 
+Canonical URL: https://posthog.com/docs/error-tracking/installation/node
+
+> **Cloud region:** This page uses US Cloud hosts. For an EU Cloud project, use `https://p.anny.cloud` instead of `https://p.anny.cloud` (ingestion host), and use `https://posthog.anny.cloud` instead of `https://posthog.anny.cloud` (app host for links).
+
+## On this page
+
+- [Install the package](#install-the-package)
+- [Initialize PostHog](#initialize-posthog)
+- [Send an event](#send-an-event)
+- [Configure exception autocapture](#configure-exception-autocapture)
+- [Manually capture exceptions](#manually-capture-exceptions)
+- [Verify error tracking](#verify-error-tracking)
+- [Upload source maps](#upload-source-maps)
+
 1.  1
 
     ## Install the package
@@ -146,12 +160,4 @@
 
     Let's continue to the next section.
 
-    [Upload source maps](/docs/error-tracking/upload-source-maps/node.md)
-
-### Still have questions?
-
-Ask PostHog AI
-
-### Was this page useful?
-
-HelpfulCould be better
+    [Upload source maps](https://posthog.com/docs/error-tracking/upload-source-maps/node.md)
