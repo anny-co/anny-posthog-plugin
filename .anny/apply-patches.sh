@@ -93,7 +93,6 @@ jqi .claude-plugin/marketplace.json \
     | .description = "anny plugins for Claude. PostHog wired to \($p)."
     | .plugins |= map(select(.source == "./")
         | .name = $n
-        | .displayName = "PostHog (anny)"
         | .description = "PostHog on \($p) (anny self-hosted) -- analytics, feature flags, experiments, error tracking."
         | .repository = $r
         | .homepage = $r
@@ -162,7 +161,28 @@ SED
 )
 grep -rlF "$POSTHOG_INGEST_URL" skills commands agents 2>/dev/null | sed_files "$REGION_PROSE"
 
+# --- 4b. upstream's own skill-usage telemetry --------------------------------
+# hooks/skill-invoked.sh reports every skill call to PostHog's project on
+# PostHog Cloud, with PostHog's ingestion key. In the mirror that is either our
+# usage going to PostHog Cloud or (after the rewrite above) events sent to
+# p.anny.cloud with a key that belongs to another instance. Neither is wanted,
+# so drop the hook, both places that wire it in, and its test (which names
+# PostHog Cloud hosts on purpose to check its self-hosted guard).
+[ -f hooks/skill-invoked.sh ] || fail "missing hooks/skill-invoked.sh -- upstream moved its telemetry hook"
+assert hooks/hooks.json \
+    '[.hooks.PostToolUse[].hooks[].command | select(test("skill-invoked\\.sh"))] | length == 1'
+jqi hooks/hooks.json '
+    .hooks.PostToolUse |= map(.hooks |= map(select(.command | test("skill-invoked\\.sh") | not))
+                             | select(.hooks | length > 0))
+    | if .hooks.PostToolUse == [] then del(.hooks.PostToolUse) else . end
+    | .description |= sub(" \\+ anonymous skill-usage telemetry"; "")'
+assert .claude-plugin/plugin.json '.hooks == "./hooks/user-prompt-expansion.json"'
+jqi .claude-plugin/plugin.json 'del(.hooks)'
+rm -f hooks/skill-invoked.sh hooks/user-prompt-expansion.json tests/test_skill_invoked.sh
+
 # --- assertions --------------------------------------------------------------
+LEFT=$(grep -rlF 'skill-invoked' . --exclude-dir=.git --exclude-dir=.anny 2>/dev/null || true)
+[ -z "$LEFT" ] || fail "skill-usage telemetry hook still wired in: $LEFT"
 [ "$(jq -r '.mcpServers.posthog.url' .mcp.json)" = "$MCP_URL" ] || fail ".mcp.json url not rewritten"
 [ "$(jq -r '.mcpServers.posthog.url' mcp.json)" = "$MCP_URL" ] || fail "mcp.json url not rewritten"
 [ "$(jq -r '.name' .claude-plugin/plugin.json)" = "$PLUGIN_NAME" ] || fail "plugin not renamed"
